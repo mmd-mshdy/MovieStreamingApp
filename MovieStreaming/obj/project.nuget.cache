@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "PZrDwns1FxA=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Mohammad's Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\MovieStreaming.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Mohammad's Lenovo\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.3\\microsoft.aspnetcore.openapi.10.0.3.nupkg.sha512",
+    "C:\\Users\\Mohammad's Lenovo\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
