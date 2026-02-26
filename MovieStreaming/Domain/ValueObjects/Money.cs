@@ -4,7 +4,7 @@ namespace MovieStreaming.Domain.ValueObjects
 {
     public class Money : ValueObject
     {
-        public decimal Amount {  get; }
+        public decimal Amount { get; private set; }
         public string Currency {get;}
         private Money() { }
         public override IEnumerable<object> GetAtomicValues()
@@ -19,7 +19,20 @@ namespace MovieStreaming.Domain.ValueObjects
             if (string.IsNullOrWhiteSpace(currency)) throw new InvalidOperationException();
             this.Currency = currency;
         }
-
+        public void Add(Money money)
+        {
+            if (money == null) throw new ArgumentNullException(nameof(money));
+            if(money.Amount < 0) throw new InvalidOperationException();
+            if(money.Currency != Currency) throw new InvalidOperationException();
+            Amount += money.Amount;
+        }
+        public void Deduct (Money money)
+        {
+            if(money == null) throw new ArgumentNullException(nameof(money));
+            if (money.Currency != Currency) throw new InvalidOperationException();
+            if (money.Amount< this.Amount)throw new InvalidOperationException();
+            Amount -= money.Amount;
+        }
 
     }
 }

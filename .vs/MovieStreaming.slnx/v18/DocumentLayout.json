@@ -11,32 +11,28 @@
       "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\aggregates\\movies\\movie.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\aggregates\\movies\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\aggregates\\movies\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\common\\entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\common\\entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\enums\\subscriptiontype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\enums\\subscriptiontype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\aggregates\\movies\\episode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\aggregates\\movies\\episode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\valueobjects\\money.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\valueobjects\\money.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\common\\valueobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\common\\valueobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\aggregates\\movies\\series.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\aggregates\\movies\\series.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\common\\aggregateroot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\common\\aggregateroot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\common\\valueobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\common\\valueobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\aggregates\\movies\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\aggregates\\movies\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,15 +42,67 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Episode.cs",
+              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Movies\\Episode.cs",
+              "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Aggregates\\Movies\\Episode.cs",
+              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Movies\\Episode.cs",
+              "RelativeToolTip": "MovieStreaming\\Domain\\Aggregates\\Movies\\Episode.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T21:14:12.764Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AggregateRoot.cs",
+              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Common\\AggregateRoot.cs",
+              "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Common\\AggregateRoot.cs",
+              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Common\\AggregateRoot.cs",
+              "RelativeToolTip": "MovieStreaming\\Domain\\Common\\AggregateRoot.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T20:57:48.791Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Series.cs",
+              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Movies\\Series.cs",
+              "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Aggregates\\Movies\\Series.cs",
+              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Movies\\Series.cs",
+              "RelativeToolTip": "MovieStreaming\\Domain\\Aggregates\\Movies\\Series.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwBMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T20:57:13.237Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
+              "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
+              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
+              "RelativeToolTip": "MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAswCIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T20:46:26.856Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "Review.cs",
               "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Movies\\Review.cs",
               "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Aggregates\\Movies\\Review.cs",
@@ -73,7 +121,7 @@
               "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Aggregates\\Movies\\Movie.cs",
               "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Movies\\Movie.cs",
               "RelativeToolTip": "MovieStreaming\\Domain\\Aggregates\\Movies\\Movie.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAAAUAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-25T23:24:45.958Z",
               "EditorCaption": ""
@@ -86,87 +134,23 @@
               "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Common\\ValueObject.cs",
               "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Common\\ValueObject.cs",
               "RelativeToolTip": "MovieStreaming\\Domain\\Common\\ValueObject.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAzwAYAAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-25T22:47:01.2Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "Money.cs",
               "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\ValueObjects\\Money.cs",
               "RelativeDocumentMoniker": "MovieStreaming\\Domain\\ValueObjects\\Money.cs",
               "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\ValueObjects\\Money.cs",
               "RelativeToolTip": "MovieStreaming\\Domain\\ValueObjects\\Money.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAAACEAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-25T22:38:08.992Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SubscriptionType.cs",
-              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Enums\\SubscriptionType.cs",
-              "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Enums\\SubscriptionType.cs",
-              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Enums\\SubscriptionType.cs",
-              "RelativeToolTip": "MovieStreaming\\Domain\\Enums\\SubscriptionType.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-24T21:29:53.006Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
-              "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
-              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
-              "RelativeToolTip": "MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-24T21:16:13.729Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AggregateRoot.cs",
-              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Common\\AggregateRoot.cs",
-              "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Common\\AggregateRoot.cs",
-              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Common\\AggregateRoot.cs",
-              "RelativeToolTip": "MovieStreaming\\Domain\\Common\\AggregateRoot.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-24T21:14:00.99Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Entity.cs",
-              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Common\\Entity.cs",
-              "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Common\\Entity.cs",
-              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Common\\Entity.cs",
-              "RelativeToolTip": "MovieStreaming\\Domain\\Common\\Entity.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAtwAsAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-24T21:12:19.551Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Program.cs",
-              "RelativeDocumentMoniker": "MovieStreaming\\Program.cs",
-              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Program.cs",
-              "RelativeToolTip": "MovieStreaming\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-24T00:49:01.716Z"
             }
           ]
         }
