@@ -1,14 +1,15 @@
 ﻿using MovieStreaming.Domain.Common;
 using MovieStreaming.Domain.Enums;
+using MovieStreaming.Domain.ValueObjects;
 
-namespace MovieStreaming.Domain.Users
+namespace MovieStreaming.Domain.Aggregates.Users
 {
-    public class User:AggregateRoot<Guid>
+    public class User:AggregateRoot
     {
-        public Guid Id { get; private set; }
         public string Name { get; private set;}
         public string Email{ get; private set;}
         public string PasswordHash { get; private set;}
+        public Money WalletBallance { get; private set;}
         public SubscriptionType SubscriptionType { get; private set;}
         internal User(string name, string email, string password, SubscriptionType subscriptionType)
         {
