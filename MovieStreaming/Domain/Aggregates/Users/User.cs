@@ -11,7 +11,7 @@ namespace MovieStreaming.Domain.Aggregates.Users
         public string PasswordHash { get; private set;}
         public Money WalletBallance { get; private set;}
         public SubscriptionType SubscriptionType { get; private set;}
-        internal User(string name, string email, string password, SubscriptionType subscriptionType)
+        internal User(Guid id,string name, string email, string password, SubscriptionType subscriptionType) : base(id)
         {
             name = Name;
             email = Email;
@@ -20,8 +20,21 @@ namespace MovieStreaming.Domain.Aggregates.Users
         }
         public void CreateUser(User user)
         {
-            var newuser = new User(user.Name, user.Email, user.PasswordHash,user.SubscriptionType);
+            var newuser = new User(user.Id,user.Name, user.Email, user.PasswordHash,user.SubscriptionType);
         }
+        public void UpdateUser(User user)
+        {
 
+        }
+        public void AddWalletBalance(Money money)
+        {
+            WalletBallance.Add(money);
+           
+        }
+        public void DeductWalletBallance(Money money)
+        {
+            WalletBallance.Deduct(money);
+
+        }
     }
 }
