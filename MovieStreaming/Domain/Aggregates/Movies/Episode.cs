@@ -4,6 +4,8 @@ namespace MovieStreaming.Domain.Aggregates.Movies
 {
     public class Episode : Entity
     {
+        public Guid SeriesId { get; set; }
+        public Series Series { get; set; }
         public string Title { get; private set; }
         public TimeSpan Duration { get; private set; }
         public int SeasonNumber { get; private set; }

@@ -1,9 +1,14 @@
-﻿namespace MovieStreaming.Domain.Common
+﻿public abstract class AggregateRoot
 {
-    public abstract class AggregateRoot : Entity
+    public Guid Id { get; protected set; }
+
+    protected AggregateRoot()
     {
-        protected AggregateRoot(Guid id) : base(id)
-        {
-        }
+        // EF Core uses this
+    }
+
+    protected AggregateRoot(Guid id)
+    {
+        Id = id;
     }
 }
