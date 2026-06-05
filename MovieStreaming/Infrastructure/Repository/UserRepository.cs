@@ -1,15 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieStreaming.Application.Interfaces;
 using MovieStreaming.Domain.Aggregates.Users;
+using System.Data;
+using Dapper;
 
 namespace MovieStreaming.Infrastructure.Repository
 {
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _context;
-        public UserRepository(ApplicationDbContext context)
+        private readonly IDbConnection _dbConnection;
+        public UserRepository(ApplicationDbContext context, IDbConnection dbConnection)
         {
             _context = context;
+            _dbConnection = dbConnection;
         }
         public async Task CreateUser(User user)
         {
@@ -26,12 +30,31 @@ namespace MovieStreaming.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<User> GetUserById(Guid id) => await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        public async Task<User> GetUserById(Guid id)
+        {
+            var query = @"SELECT * FROM Users WHERE Id = @Id ";
+            var user = await _dbConnection.QueryFirstOrDefaultAsync<User>(query, new { Id = id });
+            if (user == null) throw new ArgumentNullException($"{nameof(user)}");
+            return user;
 
-        public async Task<IEnumerable<User>> GetUserByName(string name) => await _context.Users.Where(u => u.Name == name)
-                                                                                  .ToListAsync();
-        public async Task<IEnumerable<User>> GetUserByEmail(string email) => await _context.Users.Where(u => u.Email == email)
-                                                                                  .ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetUserByName(string name)
+        {
+
+            var query = @"SELECT * FROM Users WHERE Name = @Name ";
+            IEnumerable<User> users = await _dbConnection.QueryAsync<User>(query, new { Name = name });
+            if (users == null) throw new ArgumentNullException($"{nameof(users)}");
+            return users;
+
+        }
+        public async Task<IEnumerable<User>> GetUserByEmail(string email)
+        {
+            var query = @"SELECT * FROM Users WHERE Email = @email; ";
+            IEnumerable<User> users = await _dbConnection.QueryAsync<User>(query, new { Email = email });
+            if (users == null) throw new ArgumentNullException($"{nameof(users)}");
+            return users;
+        }
 
         public async Task UpdateUser(User user)
         {
