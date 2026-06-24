@@ -69,40 +69,14 @@ namespace MovieStreaming.Migrations
                     b.ToTable("CastMembers");
                 });
 
-            modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Episode", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
-
-                    b.Property<int>("EpisodeNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SeasonNumber")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SeriesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SeriesId");
-
-                    b.ToTable("Episode");
-                });
-
             modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Movie", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("AverageRating")
+                        .HasColumnType("float");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -111,10 +85,21 @@ namespace MovieStreaming.Migrations
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("time");
 
+                    b.Property<Guid>("GenreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PosterUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateOnly>("ReleaseDate")
                         .HasColumnType("date");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VideoUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -126,51 +111,6 @@ namespace MovieStreaming.Migrations
                     b.HasIndex("WatchListId");
 
                     b.ToTable("Movies");
-                });
-
-            modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Review", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("MovieId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("Reviews");
-                });
-
-            modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Series", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Series");
                 });
 
             modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Users.User", b =>
@@ -196,11 +136,40 @@ namespace MovieStreaming.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Users.WatchHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("bit");
+
+                    b.Property<TimeSpan>("LastPosition")
+                        .HasColumnType("time");
+
+                    b.Property<DateTime>("LastWatchedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("MovieId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WatchHistories");
+                });
+
             modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Users.WatchList", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("AddedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("MovieId")
                         .HasColumnType("uniqueidentifier");
@@ -213,6 +182,35 @@ namespace MovieStreaming.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("WatchList");
+                });
+
+            modelBuilder.Entity("Review", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("MovieId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("CastMembersMovie", b =>
@@ -230,33 +228,11 @@ namespace MovieStreaming.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Episode", b =>
-                {
-                    b.HasOne("MovieStreaming.Domain.Aggregates.Movies.Series", "Series")
-                        .WithMany("Episodes")
-                        .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Series");
-                });
-
             modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Movie", b =>
                 {
                     b.HasOne("MovieStreaming.Domain.Aggregates.Users.WatchList", null)
                         .WithMany("Movies")
                         .HasForeignKey("WatchListId");
-                });
-
-            modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Review", b =>
-                {
-                    b.HasOne("MovieStreaming.Domain.Aggregates.Movies.Movie", "Movie")
-                        .WithMany("Reviews")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Users.User", b =>
@@ -298,14 +274,18 @@ namespace MovieStreaming.Migrations
                     b.Navigation("user");
                 });
 
+            modelBuilder.Entity("Review", b =>
+                {
+                    b.HasOne("MovieStreaming.Domain.Aggregates.Movies.Movie", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Movie", b =>
                 {
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Series", b =>
-                {
-                    b.Navigation("Episodes");
                 });
 
             modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Users.User", b =>

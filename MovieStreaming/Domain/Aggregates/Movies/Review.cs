@@ -1,22 +1,31 @@
 ﻿using MovieStreaming.Domain.Common;
-using System.Text.Json.Serialization;
 
-namespace MovieStreaming.Domain.Aggregates.Movies
+public class Review : Entity
 {
-    public class Review:Entity
-    {
-        public Guid UserId { get; set; }
-        public Guid MovieId { get; set; }
+    public Guid UserId { get; private set; }
 
-        [JsonIgnore]
-        public Movie Movie { get; set; }
-        public int Rating { get; set; }
-        public string Comment { get; set; }
-        public Review(Guid id ,Guid userId, int rating, string comment) : base(id)
-        {
-            UserId = userId;
-            Rating = rating;
-            Comment = comment;
-        }
+    public Guid MovieId { get; set; }
+
+    public int Rating { get; private set; }
+
+    public string Comment { get; private set; }
+
+    public DateTime CreatedAt { get; private set; }
+
+    private Review(Guid id) : base (id){ }
+
+    public Review(
+        Guid id,
+        Guid movieId,
+        Guid userId,
+        int rating,
+        string comment)
+        : base(id)
+    {
+        MovieId = movieId;
+        UserId = userId;
+        Rating = rating;
+        Comment = comment;
+        CreatedAt = DateTime.UtcNow;
     }
 }

@@ -9,7 +9,7 @@ namespace MovieStreaming.Domain.Aggregates.Users
         public User? user { get; private set; }
         public Guid MovieId { get; private set; }
         public ICollection<Movie> Movies { get; private set; } = new List<Movie>();
-        public DateTime? WatchedAt { get;  }
+        public DateTime? AddedAt { get; private set; }
         protected WatchList(Guid id ,Guid userId, Guid movieId) : base(id)
         {
             UserId = userId;

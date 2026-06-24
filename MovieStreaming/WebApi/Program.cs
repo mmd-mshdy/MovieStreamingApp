@@ -36,11 +36,18 @@ builder.Services.AddMediatR(cfg =>
 );
 builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IWatchHistoryQueries,WatchHistoryQueries>();
+builder.Services.AddScoped<IWatchHistoryRepository,WatchHistoryRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICastMemberRepository, CastMemberRepository>();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<ICurrentUserService,
+    CurrentUserService>();
 
 
 builder.Services.AddControllers();

@@ -12,16 +12,59 @@ namespace MovieStreaming.Domain.Aggregates.Movies
         public string Description { get; set; }
         public TimeSpan Duration { get; set; }
         public DateOnly ReleaseDate { get; set; }
+        public Guid GenreId { get; private set; }
+
+        public string PosterUrl { get; private set; }
+
+        public string VideoUrl { get; private set; }
+
+        public double AverageRating { get; private set; }
         public IReadOnlyCollection<CastMembers> CastMembers => _castMembers.AsReadOnly();
         public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
-        public Result AddReview(Guid id, Guid userId, int rating, string comment)
+        public Result AddReview(
+    Guid reviewId,
+    Guid userId,
+    int rating,
+    string comment)
         {
-            var newReview = new Review(id, userId, rating, comment);
-            if (newReview == null) return Result.Failure(new("Review.empty", "Review can not be empty"));
-            if (newReview.Rating < 1 || newReview.Rating > 5) return Result.Failure(new("Review.Rating.Invalid", "Put a valid rating input between 1 and 5"));
-            _reviews.Add(newReview);
-            return Result.Success(newReview);
+            if (rating < 1 || rating > 5)
+            {
+                return Result.Failure(
+                    new(
+                        "Review.Rating.Invalid",
+                        "Rating must be between 1 and 5"));
+            }
 
+            if (_reviews.Any(r => r.UserId == userId))
+            {
+                return Result.Failure(
+                    new(
+                        "Review.AlreadyExists",
+                        "User has already reviewed this movie"));
+            }
+
+            var review = new Review(
+                reviewId,
+                Id,
+                userId,
+                rating,
+                comment);
+
+            _reviews.Add(review);
+
+            RecalculateAverageRating();
+
+            return Result.Success(review);
+        }
+        private void RecalculateAverageRating()
+        {
+            if (!_reviews.Any())
+            {
+                AverageRating = 0;
+                return;
+            }
+
+            AverageRating = _reviews.Average(r => r.Rating);
         }
         public Result AddCastMembers (IEnumerable<CastMembers> castMembers)
         {

@@ -83,5 +83,25 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WatchHistoryController",
+    "Method": "GetHistory",
+    "RelativePath": "api/watch-history",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WatchHistoryController",
+    "Method": "GetContinueWatching",
+    "RelativePath": "api/watch-history/continue-watching",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]

@@ -19,6 +19,8 @@ namespace MovieStreaming.Domain.ValueObjects
             if (string.IsNullOrWhiteSpace(currency)) throw new InvalidOperationException();
             this.Currency = currency;
         }
+        public static Money Zero(string currency) => new Money(0, currency);
+
         public void Add(Money money)
         {
             if (money == null) throw new ArgumentNullException(nameof(money));

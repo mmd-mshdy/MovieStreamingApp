@@ -153,6 +153,30 @@
           }
         }
       }
+    },
+    "/api/watch-history": {
+      "get": {
+        "tags": [
+          "WatchHistory"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/watch-history/continue-watching": {
+      "get": {
+        "tags": [
+          "WatchHistory"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -219,6 +243,9 @@
     },
     {
       "name": "User"
+    },
+    {
+      "name": "WatchHistory"
     }
   ]
 }
