@@ -4,42 +4,46 @@ using MovieStreaming.Application.Command.Movie;
 using MovieStreaming.Application.Command.MovieCommands;
 using MovieStreaming.Application.DTOs;
 using MovieStreaming.Application.Queries.MovieQueries;
-using MovieStreaming.Domain.Common.Result;
 
 namespace MovieStreaming.WebApi.Controllers
 {
     [ApiController]
-    [Route("Api/[controller]")]
-    public class MovieController : Controller
+    [Route("api/movies")] // Lowercase, plural RESTful routing
+    public class MovieController : ControllerBase // Changed to ControllerBase (preferred for APIs)
     {
         private readonly ISender _sender;
         public MovieController(ISender sender)
         {
-            _sender=sender;
+            _sender = sender;
         }
-        [HttpGet("{id:Guid}")]
-        public async Task<IActionResult> GetMovieById (Guid id)
+
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetMovieById(Guid id)
         {
-            var command = new GetMovieByIdQuery(id);
-            var result =await _sender.Send(command);
-            return result!=null ? Ok(result) : BadRequest();
+            var query = new GetMovieByIdQuery(id);
+            var result = await _sender.Send(query);
+
+            // Assuming your queries return a Result pattern wrapper
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
-        [HttpPost("Add Movie")]
+
+        [HttpPost]
         public async Task<IActionResult> CreateMovie([FromBody] CreateMovieDto dto)
         {
             var command = new CreateMovieCommand(dto);
             var result = await _sender.Send(command);
-            return result == null? BadRequest() : Ok(result);
 
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
-        [HttpPost("Add Review")]
-        public async Task<IActionResult> AddReview([FromBody]AddReviewDto dto , Guid movieId)
+
+        [HttpPost("{movieId:guid}/reviews")] // Clean REST path: /api/movies/{movieId}/reviews
+        public async Task<IActionResult> AddReview([FromRoute] Guid movieId, [FromBody] AddReviewDto dto)
         {
             Guid id = Guid.NewGuid();
-            var command = new AddReviewCommand(id,movieId,dto);
+            var command = new AddReviewCommand(id, movieId, dto);
             var result = await _sender.Send(command);
-            return result==null? BadRequest() : Ok(result);
 
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
     }
 }

@@ -1,24 +1,8 @@
 [
   {
     "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
-    "Method": "GetMovieById",
-    "RelativePath": "Api/Movie/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
     "Method": "CreateMovie",
-    "RelativePath": "Api/Movie/Add Movie",
+    "RelativePath": "api/movies",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -33,21 +17,37 @@
   },
   {
     "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
+    "Method": "GetMovieById",
+    "RelativePath": "api/movies/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
     "Method": "AddReview",
-    "RelativePath": "Api/Movie/Add Review",
+    "RelativePath": "api/movies/{movieId}/reviews",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "dto",
-        "Type": "MovieStreaming.Application.DTOs.AddReviewDto",
+        "Name": "movieId",
+        "Type": "System.Guid",
         "IsRequired": true
       },
       {
-        "Name": "movieId",
-        "Type": "System.Guid",
-        "IsRequired": false
+        "Name": "dto",
+        "Type": "MovieStreaming.Application.DTOs.AddReviewDto",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -55,7 +55,7 @@
   {
     "ContainingType": "MovieStreaming.WebApi.Controllers.UserController",
     "Method": "CreateUser",
-    "RelativePath": "Api/User",
+    "RelativePath": "api/users",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -71,7 +71,7 @@
   {
     "ContainingType": "MovieStreaming.WebApi.Controllers.UserController",
     "Method": "GetUserById",
-    "RelativePath": "Api/User/{id}",
+    "RelativePath": "api/users/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -85,7 +85,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WatchHistoryController",
+    "ContainingType": "MovieStreaming.WebApi.Controllers.WatchHistoryController",
     "Method": "GetHistory",
     "RelativePath": "api/watch-history",
     "HttpMethod": "GET",
@@ -95,13 +95,71 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WatchHistoryController",
+    "ContainingType": "MovieStreaming.WebApi.Controllers.WatchHistoryController",
     "Method": "GetContinueWatching",
     "RelativePath": "api/watch-history/continue-watching",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.WatchHistoryController",
+    "Method": "UpdateProgress",
+    "RelativePath": "api/watch-history/progress",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "MovieStreaming.WebApi.Controllers.UpdateProgressDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.WatchListController",
+    "Method": "AddToWatchList",
+    "RelativePath": "api/watchlist",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "MovieStreaming.WebApi.Controllers.AddToWatchListDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.WatchListController",
+    "Method": "GetWatchList",
+    "RelativePath": "api/watchlist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.WatchListController",
+    "Method": "RemoveFromWatchList",
+    "RelativePath": "api/watchlist/{movieId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "movieId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   }
 ]

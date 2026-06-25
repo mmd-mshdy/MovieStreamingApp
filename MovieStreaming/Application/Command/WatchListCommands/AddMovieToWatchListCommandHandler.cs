@@ -5,7 +5,7 @@ using MovieStreaming.Domain.Aggregates.Users;
 
 public class AddMovieToWatchListCommandHandler : IRequestHandler<AddMovieToWatchListCommand>
 {
-    private readonly IWatchListRepository _repository; // You'll need this interface defined
+    private readonly IWatchListRepository _repository; 
     private readonly ICurrentUserService _currentUser;
     private readonly IUnitOfWork _unitOfWork;
 

@@ -5,7 +5,7 @@
     "version": "v1"
   },
   "paths": {
-    "/Api/Movie/{id}": {
+    "/api/movies/{id}": {
       "get": {
         "tags": [
           "Movie"
@@ -28,7 +28,7 @@
         }
       }
     },
-    "/Api/Movie/Add Movie": {
+    "/api/movies": {
       "post": {
         "tags": [
           "Movie"
@@ -59,7 +59,7 @@
         }
       }
     },
-    "/Api/Movie/Add Review": {
+    "/api/movies/{movieId}/reviews": {
       "post": {
         "tags": [
           "Movie"
@@ -67,7 +67,8 @@
         "parameters": [
           {
             "name": "movieId",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -100,7 +101,7 @@
         }
       }
     },
-    "/Api/User/{id}": {
+    "/api/users/{id}": {
       "get": {
         "tags": [
           "User"
@@ -123,7 +124,7 @@
         }
       }
     },
-    "/Api/User": {
+    "/api/users": {
       "post": {
         "tags": [
           "User"
@@ -177,6 +178,101 @@
           }
         }
       }
+    },
+    "/api/watch-history/progress": {
+      "post": {
+        "tags": [
+          "WatchHistory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProgressDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProgressDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProgressDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/watchlist": {
+      "post": {
+        "tags": [
+          "WatchList"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToWatchListDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToWatchListDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToWatchListDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "WatchList"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/watchlist/{movieId}": {
+      "delete": {
+        "tags": [
+          "WatchList"
+        ],
+        "parameters": [
+          {
+            "name": "movieId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -195,6 +291,16 @@
           "comment": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddToWatchListDto": {
+        "type": "object",
+        "properties": {
+          "movieId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "additionalProperties": false
@@ -234,6 +340,20 @@
           }
         },
         "additionalProperties": false
+      },
+      "UpdateProgressDto": {
+        "type": "object",
+        "properties": {
+          "movieId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "positionSeconds": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
       }
     }
   },
@@ -246,6 +366,9 @@
     },
     {
       "name": "WatchHistory"
+    },
+    {
+      "name": "WatchList"
     }
   ]
 }

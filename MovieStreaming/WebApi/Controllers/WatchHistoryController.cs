@@ -1,35 +1,44 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MovieStreaming.Application.Command.WatchHistoryCommands;
 
-[Authorize]
-[ApiController]
-[Route("api/watch-history")]
-public class WatchHistoryController : ControllerBase
+namespace MovieStreaming.WebApi.Controllers
 {
-    private readonly ISender _sender;
-
-    public WatchHistoryController(
-        ISender sender)
+    [Authorize]
+    [ApiController]
+    [Route("api/watch-history")]
+    public class WatchHistoryController : ControllerBase
     {
-        _sender = sender;
+        private readonly ISender _sender;
+
+        public WatchHistoryController(ISender sender)
+        {
+            _sender = sender;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetHistory()
+        {
+            var result = await _sender.Send(new GetWatchHistoryQuery());
+            return Ok(result);
+        }
+
+        [HttpGet("continue-watching")]
+        public async Task<IActionResult> GetContinueWatching()
+        {
+            var result = await _sender.Send(new GetContinueWatchingQuery());
+            return Ok(result);
+        }
+
+        [HttpPost("progress")] // Added missing progress tracker endpoint!
+        public async Task<IActionResult> UpdateProgress([FromBody] UpdateProgressDto dto)
+        {
+            var command = new UpdateWatchProgressCommand(dto.MovieId, dto.PositionSeconds);
+            await _sender.Send(command);
+            return NoContent();
+        }
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetHistory()
-    {
-        var result = await _sender.Send(
-            new GetWatchHistoryQuery());
-
-        return Ok(result);
-    }
-
-    [HttpGet("continue-watching")]
-    public async Task<IActionResult> GetContinueWatching()
-    {
-        var result = await _sender.Send(
-            new GetContinueWatchingQuery());
-
-        return Ok(result);
-    }
+    public record UpdateProgressDto(Guid MovieId, int PositionSeconds);
 }

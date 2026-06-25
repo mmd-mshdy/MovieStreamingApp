@@ -7,6 +7,7 @@ using MovieStreaming.Application.DTOs.Mapper;
 using MovieStreaming.Application.Interfaces;
 using MovieStreaming.Domain.Aggregates.Users;
 using MovieStreaming.Infrastructure;
+using MovieStreaming.Infrastructure.Queries;
 using MovieStreaming.Infrastructure.Repositories;
 using MovieStreaming.Infrastructure.Repository;
 using System.Data;
@@ -16,6 +17,7 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//conection string to the database
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connection));
@@ -35,6 +37,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(MovieStreaming.Application.AssemblyReference).Assembly);
 }
 );
+// Repository related services
 builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IWatchHistoryQueries,WatchHistoryQueries>();
@@ -43,6 +46,7 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICastMemberRepository, CastMemberRepository>();
 builder.Services.AddScoped<IWatchListRepository, WatchListRepository>();
+builder.Services.AddScoped<IWatchListQueries, WatchListQueries>();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
@@ -62,7 +66,7 @@ SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline. SWAGGER
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -71,10 +75,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Streaming API v1");
     }); 
 }
-
-
-
-
+//main ones
 app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();
