@@ -12,6 +12,7 @@ namespace MovieStreaming.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<CastMembers> CastMembers { get; set; } 
         public DbSet<WatchHistory> WatchHistories { get; set; }
+        public DbSet<WatchList> WatchLists{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

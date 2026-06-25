@@ -7,6 +7,7 @@ using MovieStreaming.Application.DTOs.Mapper;
 using MovieStreaming.Application.Interfaces;
 using MovieStreaming.Domain.Aggregates.Users;
 using MovieStreaming.Infrastructure;
+using MovieStreaming.Infrastructure.Repositories;
 using MovieStreaming.Infrastructure.Repository;
 using System.Data;
 using System.Reflection;
@@ -41,6 +42,7 @@ builder.Services.AddScoped<IWatchHistoryRepository,WatchHistoryRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICastMemberRepository, CastMemberRepository>();
+builder.Services.AddScoped<IWatchListRepository, WatchListRepository>();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
