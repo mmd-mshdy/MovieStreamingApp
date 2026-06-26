@@ -48,12 +48,14 @@ namespace MovieStreaming.Infrastructure.Repository
             return users;
 
         }
-        public async Task<IEnumerable<User>> GetUserByEmail(string email)
+        public async Task<User?> FindByEmailAsync(string email)
         {
-            var query = @"SELECT * FROM Users WHERE Email = @email; ";
-            IEnumerable<User> users = await _dbConnection.QueryAsync<User>(query, new { Email = email });
-            if (users == null) throw new ArgumentNullException($"{nameof(users)}");
-            return users;
+            var query = @"SELECT TOP 1 * FROM Users WHERE Email = @Email;";
+
+            // QuerySingleOrDefaultAsync tells Dapper to expect exactly 0 or 1 rows
+            var user = await _dbConnection.QuerySingleOrDefaultAsync<User>(query, new { Email = email });
+
+            return user; // Returns the single User aggregate or null if not found
         }
 
         public async Task UpdateUser(User user)

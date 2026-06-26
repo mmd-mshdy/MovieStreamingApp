@@ -1,13 +1,16 @@
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\appsettings.Development.json
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\appsettings.json
+C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Infrastructure\movies-seed.json
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\MovieStreaming.staticwebassets.endpoints.json
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\MovieStreaming.exe
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\MovieStreaming.deps.json
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\MovieStreaming.runtimeconfig.json
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\MovieStreaming.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\MovieStreaming.pdb
+C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\AutoMapper.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Azure.Core.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Azure.Identity.dll
+C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Dapper.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\FluentValidation.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\FluentValidation.DependencyInjectionExtensions.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Humanizer.dll
@@ -44,6 +47,9 @@ C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Microsoft.VisualStudio.SolutionPersistence.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Mono.TextTemplating.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Newtonsoft.Json.dll
+C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\System.ClientModel.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\System.CodeDom.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\System.Composition.AttributedModel.dll
@@ -164,9 +170,3 @@ C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\obj\Debug\
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\obj\Debug\net10.0\MovieStreaming.pdb
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\obj\Debug\net10.0\MovieStreaming.genruntimeconfig.cache
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\obj\Debug\net10.0\ref\MovieStreaming.dll
-C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
-C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\AutoMapper.dll
-C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Dapper.dll
-C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Infrastructure\movies-seed.json

@@ -9,6 +9,6 @@ namespace MovieStreaming.Application.Interfaces
         Task DeleteUser(User user);
         Task<User> GetUserById(Guid id);
         Task<IEnumerable<User>> GetUserByName(string name);
-        Task<IEnumerable<User>> GetUserByEmail(string email);
+        Task<User?> FindByEmailAsync(string email);
     }
 }

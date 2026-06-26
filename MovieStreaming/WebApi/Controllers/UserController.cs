@@ -37,5 +37,13 @@ namespace MovieStreaming.WebApi.Controllers
             if (result.IsSuccess) return Ok(result.Value);
             return BadRequest(result.Error); // Avoid hardcoding 500 errors for predictable domain failures
         }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
+        {
+            var command = new LoginUserCommand(dto);
+            var result = await _sender.Send(command);
+
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        }
     }
 }

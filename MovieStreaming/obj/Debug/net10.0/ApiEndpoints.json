@@ -17,6 +17,16 @@
   },
   {
     "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
+    "Method": "GetAllMovies",
+    "RelativePath": "api/movies",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
     "Method": "GetMovieById",
     "RelativePath": "api/movies/{id}",
     "HttpMethod": "GET",
@@ -79,6 +89,22 @@
       {
         "Name": "id",
         "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.UserController",
+    "Method": "Login",
+    "RelativePath": "api/users/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "MovieStreaming.Application.DTOs.LoginRequestDto",
         "IsRequired": true
       }
     ],

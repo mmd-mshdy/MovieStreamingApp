@@ -4,6 +4,7 @@ namespace MovieStreaming.Application.Interfaces
 {
     public interface IMovieRepository
     {
+        Task<IEnumerable<Movie>> GetAllAsync();
         Task<Movie> FindById(Guid id);
         Task<IEnumerable<Movie>> FindByTitle(string title);
         Task<IEnumerable<Movie>> FindByCastMember(string name);

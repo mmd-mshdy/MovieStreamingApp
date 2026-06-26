@@ -18,7 +18,12 @@ namespace MovieStreaming.Infrastructure.Repository
             _context = context;
             _dbConnection = dbConnection;
         }
+        public async Task<IEnumerable<Movie>> GetAllAsync()
+        {
+            var query = @"SELECT * FROM Movies";
+            return await _dbConnection.QueryAsync<Movie>(query);
 
+        }
         public async Task<Movie> FindById(Guid id)
         {
             // Ensure you have a space after "Movies"

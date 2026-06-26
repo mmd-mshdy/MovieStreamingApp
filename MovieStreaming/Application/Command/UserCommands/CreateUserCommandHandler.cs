@@ -23,8 +23,8 @@ namespace MovieStreaming.Application.Command.UserCommands
         public async Task<Result<User>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var dto = request.Dto;
-            IEnumerable<User> exists = await _userRepository.GetUserByEmail(dto.email);
-            if (exists.Any()) return Result.Failure<User>(new("User.Create.Exists", "User Already Exists"));
+            User exists = await _userRepository.FindByEmailAsync(dto.email);
+            if (exists is not null) return Result.Failure<User>(new("User.Create.Exists", "User Already Exists"));
 
             var user = new User(request.Id, dto.name, dto.email, SubscriptionType.None);
             var hashedPassword = _passwordHasher.HashPassword(user, dto.password);
