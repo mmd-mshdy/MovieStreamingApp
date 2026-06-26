@@ -1,0 +1,18 @@
+[
+  {
+    "Title": "Inception",
+    "Plot": "A thief who steals corporate secrets through the use of dream-sharing technology...",
+    "Runtime": "148 min",
+    "Released": "16 Jul 2010",
+    "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
+    "VideoUrl": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+  },
+  {
+    "Title": "Interstellar",
+    "Plot": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival...",
+    "Runtime": "169 min",
+    "Released": "07 Nov 2014",
+    "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMjIxNTU4MzY4MF5BMl5BanBnXkFtZTgwMzM4ODI3MjE@._V1_SX300.jpg",
+    "VideoUrl": "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
+  }
+]

@@ -25,4 +25,10 @@
     <PackageReference Include="TokenGenerator.Jwt" Version="1.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Infrastructure\movies-seed.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

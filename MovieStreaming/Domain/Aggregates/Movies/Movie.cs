@@ -75,6 +75,11 @@ namespace MovieStreaming.Domain.Aggregates.Movies
             }
             return Result.Success();
         }
+        public void UpdateMediaUrls(string posterUrl, string videoUrl)
+        {
+            PosterUrl = posterUrl;
+            VideoUrl = videoUrl;
+        }
         private Movie() {}
         public Movie(Guid id ,string title, string description, TimeSpan duration, DateOnly releaseDate) :base(id)
         {

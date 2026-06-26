@@ -169,3 +169,4 @@ C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\AutoMapper.dll
 C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Dapper.dll
+C:\Users\Mohammad's Lenovo\source\repos\MovieStreaming\MovieStreaming\bin\Debug\net10.0\Infrastructure\movies-seed.json
