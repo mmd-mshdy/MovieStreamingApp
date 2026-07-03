@@ -1,22 +1,6 @@
 [
   {
     "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
-    "Method": "CreateMovie",
-    "RelativePath": "api/movies",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "MovieStreaming.Application.DTOs.CreateMovieDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
     "Method": "GetAllMovies",
     "RelativePath": "api/movies",
     "HttpMethod": "GET",
@@ -57,6 +41,22 @@
       {
         "Name": "dto",
         "Type": "MovieStreaming.Application.DTOs.AddReviewDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
+    "Method": "CreateMovie",
+    "RelativePath": "api/movies/Add Movie",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "MovieStreaming.Application.DTOs.CreateMovieDto",
         "IsRequired": true
       }
     ],

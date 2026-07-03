@@ -28,7 +28,7 @@
         }
       }
     },
-    "/api/movies": {
+    "/api/movies/Add Movie": {
       "post": {
         "tags": [
           "Movie"
@@ -52,16 +52,6 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Movie"
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -104,6 +94,18 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/movies": {
+      "get": {
+        "tags": [
+          "Movie"
+        ],
         "responses": {
           "200": {
             "description": "OK"

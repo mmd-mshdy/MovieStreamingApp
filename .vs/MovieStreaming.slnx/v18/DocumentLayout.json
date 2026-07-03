@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\infrastructure\\services\\currentuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\infrastructure\\services\\currentuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,24 +18,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\WebApi\\Program.cs",
+              "RelativeDocumentMoniker": "MovieStreaming\\WebApi\\Program.cs",
+              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\WebApi\\Program.cs",
+              "RelativeToolTip": "MovieStreaming\\WebApi\\Program.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAvwIoAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-26T20:12:50.253Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "CurrentUserService.cs",
               "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Infrastructure\\Services\\CurrentUserService.cs",
               "RelativeDocumentMoniker": "MovieStreaming\\Infrastructure\\Services\\CurrentUserService.cs",
               "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Infrastructure\\Services\\CurrentUserService.cs",
               "RelativeToolTip": "MovieStreaming\\Infrastructure\\Services\\CurrentUserService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAABLAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAYwBcAAABLAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-26T04:14:43.745Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             }
           ]
         }

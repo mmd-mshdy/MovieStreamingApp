@@ -112,6 +112,15 @@ builder.Services.AddSwaggerGen(c =>
 
 // 8. Dapper Custom Global Type Mappers
 SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontendClient", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "http://localhost:5173") // Common local development ports
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -127,6 +136,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors("AllowFrontendClient");
 
 // CRITICAL PIPELINE ORDER: Authentication checks WHO you are before Authorization evaluates WHAT you can touch!
 app.UseAuthentication();
