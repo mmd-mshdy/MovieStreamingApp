@@ -51,6 +51,8 @@ builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
+
+
 // 5. JWT Authentication Handler Setup 🔒
 var jwtSecret = builder.Configuration["JwtSettings:Secret"]
     ?? throw new InvalidOperationException("JWT Secret key is missing from configuration.");
@@ -76,6 +78,17 @@ builder.Services.AddAuthentication(options =>
 });
 
 // 6. Controllers & Modern API Tools Configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowUi", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // Your Vite dev server URL
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Crucial if you handle session cookies/auth later
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -140,6 +153,7 @@ app.UseCors("AllowFrontendClient");
 
 // CRITICAL PIPELINE ORDER: Authentication checks WHO you are before Authorization evaluates WHAT you can touch!
 app.UseAuthentication();
+app.UseCors("AllowUi");
 app.UseAuthorization();
 
 app.MapControllers();

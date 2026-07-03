@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using MovieStreaming.Domain.Common.Result;
 using MovieStreaming.Domain.Aggregates.Users;
 using MovieStreaming.Application.Interfaces;
@@ -23,12 +24,12 @@ namespace MovieStreaming.Application.Command.UserCommands
         public async Task<Result<User>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var dto = request.Dto;
-            User exists = await _userRepository.FindByEmailAsync(dto.email);
-            if (exists is not null) return Result.Failure<User>(new("User.Create.Exists", "User Already Exists"));
+            var existinguser = await _userRepository.FindByEmailAsync(dto.email);
+            if (existinguser is not null) return Result.Failure<User>(new("User.Create.Exists", "User Already Exists"));
 
             var user = new User(request.Id, dto.name, dto.email, SubscriptionType.None);
             var hashedPassword = _passwordHasher.HashPassword(user, dto.password);
-            user.HashPsasword(hashedPassword);
+            user.HashPassword(hashedPassword);
             if (user == null) return Result.Failure<User>(new("User.Null", "User can not br null here"));
 
             await _userRepository.CreateUser(user);

@@ -1,28 +1,24 @@
+// src/App.tsx
 import React from 'react';
-import { AuthProvider, useAuth } from './context/authContext';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
-
-const MainLayout: React.FC = () => {
-  const { isAuthenticated } = useAuth();
-
-  // For a basic layout switch without full routing package overhead yet:
-  const path = window.location.pathname;
-
-  if (!isAuthenticated && path !== '/login') {
-    // Quick fallthrough safety lock to enforce authentication flow
-    window.history.replaceState({}, '', '/login');
-    return <Login />;
-  }
-
-  if (path === '/login') return <Login />;
-  return <Home />;
-};
+import { Register } from './pages/Register'; // Import the new register page
+import { AuthProvider } from './context/authContext';
 
 function App() {
   return (
     <AuthProvider>
-      <MainLayout />
+      <Router>
+        <div className="min-h-screen bg-zinc-950 text-slate-100">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} /> {/* Add registration endpoint */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+      </Router>
     </AuthProvider>
   );
 }

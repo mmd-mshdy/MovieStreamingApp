@@ -1,5 +1,5 @@
 // Define the backend's base URL (Update this to match your local C# API port!)
-const API_URL = "https://localhost:7049/Api/User"; 
+const API_URL = "https://localhost:7049/api/users"; 
 
 export interface LoginResponse {
   id: string;

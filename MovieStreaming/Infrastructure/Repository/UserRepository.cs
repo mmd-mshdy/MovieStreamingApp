@@ -20,7 +20,6 @@ namespace MovieStreaming.Infrastructure.Repository
             if (user == null) throw new ArgumentNullException(nameof(user));
             user.CreateUser(user);
             await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteUser(User user)
@@ -48,14 +47,14 @@ namespace MovieStreaming.Infrastructure.Repository
             return users;
 
         }
-        public async Task<User?> FindByEmailAsync(string email)
+        public async Task<User> FindByEmailAsync(string email)
         {
-            var query = @"SELECT TOP 1 * FROM Users WHERE Email = @Email;";
+            // EF Core cleanly populates private setters and backing fields!
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email);
+                
 
-            // QuerySingleOrDefaultAsync tells Dapper to expect exactly 0 or 1 rows
-            var user = await _dbConnection.QuerySingleOrDefaultAsync<User>(query, new { Email = email });
-
-            return user; // Returns the single User aggregate or null if not found
+            return user;
         }
 
         public async Task UpdateUser(User user)

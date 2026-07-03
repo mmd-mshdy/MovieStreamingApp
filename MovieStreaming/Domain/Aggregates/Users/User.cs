@@ -32,7 +32,7 @@ namespace MovieStreaming.Domain.Aggregates.Users
         {
             var newuser = new User(user.Id,user.Name, user.Email,user.SubscriptionType);
         }
-        public void HashPsasword(string hashedPass)
+        public void HashPassword(string hashedPass)
         {
             PasswordHash = hashedPass;
         }
