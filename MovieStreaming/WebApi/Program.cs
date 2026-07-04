@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using MovieStreaming.Application.DTOs.Mapper;
 using MovieStreaming.Application.Interfaces;
 using MovieStreaming.Domain.Aggregates.Users;
 using MovieStreaming.Infrastructure;
@@ -18,22 +19,57 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Database Connections (EF Core & Dapper)
+// 1. Establish Database Context Connections
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connection));
 
 builder.Services.AddScoped<IDbConnection>(sp =>
 {
-    var connectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString("DefaultConnection");
-    return new SqlConnection(connectionString);
+    var connecctionstring = sp.GetRequiredService<IConfiguration>().GetConnectionString("DefaultConnection");
+    return new SqlConnection(connecctionstring);
 });
 
-// 2. AutoMapper & MediatR (Correctly scanned at the Application layer assembly)
-var applicationAssembly = typeof(MovieStreaming.Application.AssemblyReference).Assembly;
-builder.Services.AddAutoMapper(cfg => { }, applicationAssembly);
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));
+// 2. Register Global CORS policy for your Vite Frontend UI
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowUi", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
 
+// 3. Register JWT Authentication Services
+var jwtSecretKey = builder.Configuration["Jwt:Secret"] ?? "YourSuperSecretPremiumStreamingKey123!";
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+// 4. Core Infrastructure Dependencies
+builder.Services.AddAutoMapper(cfg =>
+{
+}, typeof(MovieStreaming.Application.AssemblyReference).Assembly);
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(MovieStreaming.Application.AssemblyReference).Assembly);
+});
 // 3. Application Repositories, Queries & Unit of Work Mappings
 builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -51,48 +87,10 @@ builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-
-
-// 5. JWT Authentication Handler Setup 🔒
-var jwtSecret = builder.Configuration["JwtSettings:Secret"]
-    ?? throw new InvalidOperationException("JWT Secret key is missing from configuration.");
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-        ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
-        ClockSkew = TimeSpan.Zero
-    };
-});
-
-// 6. Controllers & Modern API Tools Configuration
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowUi", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173") // Your Vite dev server URL
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials(); // Crucial if you handle session cookies/auth later
-    });
-});
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// 7. Single, Unified Swagger Generator Customization (.NET 10 & OpenAPI 2.x Safe)
+// 5. Single, Unified Swagger Generator Customization (.NET 10 & OpenAPI 2.x Safe)
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movie Streaming API", Version = "v1" });
@@ -123,21 +121,11 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// 8. Dapper Custom Global Type Mappers
 SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontendClient", policy =>
-    {
-        policy.WithOrigins("http://localhost:3000", "http://localhost:5173") // Common local development ports
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
 
 var app = builder.Build();
 
-// 9. HTTP Request Pipeline Middlewares Configuration
+// 6. Request Pipeline Configurations
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -148,30 +136,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseRouting();
-app.UseCors("AllowFrontendClient");
-
-// CRITICAL PIPELINE ORDER: Authentication checks WHO you are before Authorization evaluates WHAT you can touch!
-app.UseAuthentication();
 app.UseCors("AllowUi");
+app.UseRouting();
+
+// CRITICAL PIPELINE GATE ORDER: Authenticate first, then Authorize!
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-// 10. Automated Asynchronous JSON Movie Data Seeding Initialization Context
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var context = services.GetRequiredService<ApplicationDbContext>();
-        await MovieStreaming.Infrastructure.Data.DbInitializer.SeedDataAsync(context);
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred during database initialization/seeding.");
-    }
-}
 
 app.Run();

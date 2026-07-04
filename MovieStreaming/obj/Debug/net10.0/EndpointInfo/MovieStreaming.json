@@ -362,6 +362,22 @@
           "duration": {
             "type": "string",
             "format": "date-span"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "genreId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "posterUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "videoUrl": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
