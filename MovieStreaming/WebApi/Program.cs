@@ -4,12 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
+using Microsoft.OpenApi; // Ensure correct namespace for OpenApi Security models
 using MovieStreaming.Application.DTOs.Mapper;
 using MovieStreaming.Application.Interfaces;
 using MovieStreaming.Domain.Aggregates.Users;
 using MovieStreaming.Infrastructure;
-using MovieStreaming.Infrastructure.Queries;
 using MovieStreaming.Infrastructure.Repositories;
 using MovieStreaming.Infrastructure.Repository;
 using MovieStreaming.Infrastructure.Services;
@@ -19,7 +18,28 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Establish Database Context Connections
+// 1. ADD JWT AUTHENTICATION SERVICES 🔑
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
+
+builder.Services.AddAuthorization(); // Register authorization services
+
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connection));
@@ -30,47 +50,13 @@ builder.Services.AddScoped<IDbConnection>(sp =>
     return new SqlConnection(connecctionstring);
 });
 
-// 2. Register Global CORS policy for your Vite Frontend UI
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowUi", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
-    });
-});
-
-// 3. Register JWT Authentication Services
-var jwtSecretKey = builder.Configuration["Jwt:Secret"] ?? "YourSuperSecretPremiumStreamingKey123!";
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ClockSkew = TimeSpan.Zero
-    };
-});
-
-// 4. Core Infrastructure Dependencies
-builder.Services.AddAutoMapper(cfg =>
-{
-}, typeof(MovieStreaming.Application.AssemblyReference).Assembly);
+builder.Services.AddAutoMapper(cfg => { }, Assembly.GetExecutingAssembly());
 
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(MovieStreaming.Application.AssemblyReference).Assembly);
 });
-// 3. Application Repositories, Queries & Unit of Work Mappings
+
 builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IWatchHistoryQueries, WatchHistoryQueries>();
@@ -79,30 +65,21 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICastMemberRepository, CastMemberRepository>();
 builder.Services.AddScoped<IWatchListRepository, WatchListRepository>();
-builder.Services.AddScoped<IWatchListQueries, WatchListQueries>();
-
-// 4. Identity Security, Identity Core Hasher, Context Accessors & Custom App Services
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// 5. Single, Unified Swagger Generator Customization (.NET 10 & OpenAPI 2.x Safe)
+// 2. CONFIGURE SWAGGER TO ACCEPT TOKENS 🛡️
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movie Streaming API", Version = "v1" });
 
-    // 📅 Maps DateOnly properties to behave as proper date strings globally in Swagger
-    c.MapType<DateOnly>(() => new OpenApiSchema
-    {
-        Type = JsonSchemaType.String,
-        Format = "date"
-    });
-
-    // 🔒 Attaches the global 'Bearer JWT' token lock interface wrapper to the top of Swagger UI
+    // 1. Define the Bearer Auth scheme
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
@@ -112,10 +89,11 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer"
     });
 
-    c.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    // 2. Updated for .NET 10: Use delegate-based function to inject security requirements smoothly
+    c.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
     {
         {
-            new OpenApiSecuritySchemeReference("Bearer", document),
+            new OpenApiSecuritySchemeReference("Bearer", doc),
             new List<string>()
         }
     });
@@ -125,7 +103,7 @@ SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
 
 var app = builder.Build();
 
-// 6. Request Pipeline Configurations
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -136,11 +114,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowUi");
 app.UseRouting();
 
-// CRITICAL PIPELINE GATE ORDER: Authenticate first, then Authorize!
-app.UseAuthentication();
+// 3. MIDDLEWARE ORDER MATTERS PER ASP.NET CORE RULES 🚦
+app.UseAuthentication(); // Must be placed before UseAuthorization!
 app.UseAuthorization();
 
 app.MapControllers();
