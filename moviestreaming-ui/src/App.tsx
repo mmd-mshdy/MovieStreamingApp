@@ -6,6 +6,7 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { ProtectedRoute } from './components/ProtectedRoute'; // 1. Import the guard component
 import { AuthProvider } from './context/authContext';
+import { MovieDetails } from './pages/MovieDetails';
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
             {/* Any route placed inside this block will require a valid login token! */}
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
-              {/* Future dashboard routes like /watch/:id or /watchlist go here */}
+        {/* Dynamic parametric route capturing the backend Guid string */}
+        <Route path="/movies/:id" element={<MovieDetails />} />
             </Route>
             
             {/* 3. PUBLIC ROUTES */}

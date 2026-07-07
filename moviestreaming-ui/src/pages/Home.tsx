@@ -1,5 +1,6 @@
 // src/pages/Home.tsx
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { movieService, type MovieDto } from '../services/movieService';
 import { useAuth } from '../context/authContext';
 
@@ -14,50 +15,58 @@ const mockMovies = [
 
 export const Home: React.FC = () => {
   const { logout, user } = useAuth();
+  const navigate = useNavigate(); // React Router programmatic navigation engine
   const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchMovies = async () => {
+    async function loadMovies() {
       try {
+        setLoading(true);
+        setError('');
         const data = await movieService.getAllMovies();
         
-        // As a professional dev safeguard: check if your database backend returned any items
         if (data && data.length > 0) {
-          const formattedMovies = data.map((m: MovieDto) => ({
-            id: m.id,
-            title: m.title,
-            posterUrl: m.posterUrl,
-            rating: 8.4, // Fallback placeholder rating
+          // Map backend data to UI-friendly format safely
+          const formatted = data.map((m: MovieDto) => ({
+            ...m,
+            rating: 8.5, // Placeholder value if not exposed on this DTO row layer yet
             releaseYear: m.releaseDate ? new Date(m.releaseDate).getFullYear() : 'N/A',
             duration: m.duration || 'N/A'
           }));
-          setMovies(formattedMovies);
+          setMovies(formatted);
         } else {
-          // No movies in DB yet? Use fallback so the application looks active!
           setMovies(mockMovies);
         }
       } catch (err) {
-        console.error("Backend offline or empty:", err);
-        // Resilient UI fallback strategy
+        console.error("Fetch failed, reverting to resilient mock values:", err);
         setMovies(mockMovies);
+        setError("Unable to connect to the backend movie catalog service.");
       } finally {
         setLoading(false);
       }
-    };
-    fetchMovies();
+    }
+    loadMovies();
   }, []);
 
   // Set up a marquee movie to display on the massive hero spotlight billboard
   const spotlightMovie = movies[0] || mockMovies[0];
+
+  // Structural handler pushing user context dynamically into the router path matrix
+  const handleMovieNavigation = (movieId: string) => {
+    navigate(`/movies/${movieId}`);
+  };
 
   return (
     <div className="min-h-screen bg-brandDark text-slate-100 font-sans antialiased selection:bg-brandAccent selection:text-white">
       {/* Premium Header Navigation */}
       <nav className="border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50 transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="text-xl font-black tracking-widest text-white cursor-pointer hover:opacity-95">
+          <div 
+            onClick={() => navigate('/')}
+            className="text-xl font-black tracking-widest text-white cursor-pointer hover:opacity-95"
+          >
             🎬 MOVIE<span className="text-brandAccent">STREAM</span>
           </div>
           <div className="flex items-center gap-6">
@@ -65,7 +74,7 @@ export const Home: React.FC = () => {
             {user ? (
               <button 
                 onClick={logout}
-                className="px-4 py-2 text-sm font-semibold bg-slate-800 hover:bg-slate-700 rounded-xl text-white shadow-sm active:scale-95 transition duration-200"
+                className="px-4 py-2 text-sm font-semibold bg-slate-800 hover:bg-slate-700 rounded-xl text-white shadow-sm active:scale-95 transition duration-200 cursor-pointer"
               >
                 Log Out
               </button>
@@ -91,7 +100,7 @@ export const Home: React.FC = () => {
 
         <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-14 md:pb-24">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-brandAccent/10 text-brandAccent border border-brandAccent/20">
-            🎬 Feature Presentation
+            🎬 Talk Feature Presentation
           </span>
           <h1 className="text-4xl md:text-6xl font-black text-white mt-4 mb-4 tracking-tight max-w-3xl drop-shadow-lg">
             {spotlightMovie?.title}
@@ -100,10 +109,16 @@ export const Home: React.FC = () => {
             Stream your absolute favorite movies and originals directly through your high-concurrency .NET Clean Architecture rendering pipeline.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="px-6 py-3 bg-brandAccent hover:bg-rose-700 text-white font-bold text-sm md:text-base rounded-xl shadow-lg shadow-rose-900/30 transform active:scale-95 transition duration-200">
+            <button 
+              onClick={() => spotlightMovie && handleMovieNavigation(spotlightMovie.id)}
+              className="px-6 py-3 bg-brandAccent hover:bg-rose-700 text-white font-bold text-sm md:text-base rounded-xl shadow-lg shadow-rose-900/30 transform active:scale-95 transition duration-200 cursor-pointer"
+            >
               ▶ Play Now
             </button>
-            <button className="px-6 py-3 bg-slate-800/80 hover:bg-slate-700 text-white font-bold text-sm md:text-base rounded-xl border border-slate-700 transition duration-200">
+            <button 
+              onClick={() => spotlightMovie && handleMovieNavigation(spotlightMovie.id)}
+              className="px-6 py-3 bg-slate-800/80 hover:bg-slate-700 text-white font-bold text-sm md:text-base rounded-xl border border-slate-700 transition duration-200 cursor-pointer"
+            >
               ℹ Details
             </button>
           </div>
@@ -125,9 +140,9 @@ export const Home: React.FC = () => {
           </div>
         )}
 
-        {error && <p className="text-rose-400 bg-rose-500/10 p-4 rounded-xl border border-rose-500/20 max-w-xl mx-auto text-center font-medium">{error}</p>}
+        {error && <p className="text-rose-400 bg-rose-500/10 p-4 rounded-xl border border-rose-500/20 max-w-xl mx-auto text-center font-medium mb-8">{error}</p>}
 
-        {!loading && !error && (
+        {!loading && (
           <div className="space-y-14">
             {/* Category 1: Trending Grid */}
             <div>
@@ -138,6 +153,7 @@ export const Home: React.FC = () => {
                 {movies.map((movie) => (
                   <div 
                     key={movie.id} 
+                    onClick={() => handleMovieNavigation(movie.id)}
                     className="group relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-slate-700/80 hover:scale-[1.03] transition-all duration-300 shadow-md hover:shadow-2xl flex flex-col cursor-pointer"
                   >
                     <div className="aspect-[2/3] w-full bg-slate-950 overflow-hidden relative">
@@ -147,7 +163,9 @@ export const Home: React.FC = () => {
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-4">
-                        <button className="w-full py-2 bg-brandAccent hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-md shadow-rose-900/40">Watch Stream</button>
+                        <button className="w-full py-2 bg-brandAccent hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-md shadow-rose-900/40 cursor-pointer">
+                          Watch Stream
+                        </button>
                       </div>
                     </div>
                     <div className="p-4 flex-grow flex flex-col justify-between">
@@ -170,7 +188,11 @@ export const Home: React.FC = () => {
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 opacity-85 hover:opacity-100 transition duration-300">
                 {[...movies].reverse().map((movie) => (
-                  <div key={`rec-${movie.id}`} className="group relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-800/80 flex flex-col cursor-pointer hover:scale-102 transition duration-200">
+                  <div 
+                    key={`rec-${movie.id}`} 
+                    onClick={() => handleMovieNavigation(movie.id)}
+                    className="group relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-800/80 flex flex-col cursor-pointer hover:scale-102 transition duration-200"
+                  >
                     <div className="aspect-[2/3] w-full bg-slate-950 overflow-hidden relative">
                       <img src={movie.posterUrl} alt={movie.title} className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition" />
                     </div>

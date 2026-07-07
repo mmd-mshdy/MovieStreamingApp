@@ -1,55 +1,65 @@
 // src/services/movieService.ts
+import apiClient from "./apiClient";
 
-// Define the backend URL pointing to your C# Movie Controller
-const API_URL = "https://localhost:7049/api/movies";
+export interface ReviewDto {
+  id: string;
+  userId: string;
+  rating: number;
+  comment: string;
+}
 
 export interface MovieDto {
   id: string;
   title: string;
-  description?: string;
-  duration?: string;
+  description: string;
+  duration: string; // Comes from backend TimeSpan string
   releaseDate?: string;
-  posterUrl: string;
+  posterUrl?: string;
   videoUrl?: string;
-  genreId?: string;
+  reviews?: ReviewDto[]; // Included when fetching single movie details
+}
+
+export interface AddReviewDto {
+  userId: string;
+  rating: number;
+  comment: string;
 }
 
 export const movieService = {
-  // 1. Fetches all movies from [HttpGet] Api/Movie
+  /**
+   * Fetch all movies (Optional fallback if implemented in backend)
+   */
   async getAllMovies(): Promise<MovieDto[]> {
-    const response = await fetch(API_URL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        // Attach your authorization token automatically so secure routes recognize the user!
-        ...authHeaderHelper() 
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Catalog stream failed with status: ${response.status}`);
-    }
-
-    return await response.json();
+    const response = await apiClient.get<MovieDto[]>("/Movie");
+    return response.data;
   },
 
-  // 2. Fetches a single movie detail block from [HttpGet] Api/Movie/{id}
+  /**
+   * Fetch a single movie including its reviews by its Guid ID
+   * Maps directly to backend: [HttpGet("{id:Guid}")] GetMovieById
+   */
   async getMovieById(id: string): Promise<MovieDto> {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", ...authHeaderHelper() },
+    const response = await apiClient.get<MovieDto>(`/Movie/${id}`);
+    return response.data;
+  },
+
+  /**
+   * Create a new movie entry
+   * Maps directly to backend: [HttpPost("Add Movie")] CreateMovie
+   */
+  async createMovie(movieData: Omit<MovieDto, "id" | "reviews">): Promise<MovieDto> {
+    const response = await apiClient.post<MovieDto>("/Movie/Add Movie", movieData);
+    return response.data;
+  },
+
+  /**
+   * Post a user critique review onto a specific movie
+   * Maps directly to backend: [HttpPost("Add Review")] AddReview([FromBody]AddReviewDto dto, Guid movieId)
+   */
+  async addReview(movieId: string, reviewData: AddReviewDto): Promise<any> {
+    const response = await apiClient.post("/Movie/Add Review", reviewData, {
+      params: { movieId }, // Appends ?movieId=guid to the query string
     });
-
-    if (!response.ok) {
-      throw new Error("Failed to retrieve movie details.");
-    }
-
-    return await response.json();
-  }
+    return response.data;
+  },
 };
-
-// Helper function to safely pull your JWT token from local storage
-function authHeaderHelper(): Record<string, string> {
-  const token = localStorage.getItem("token");
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
