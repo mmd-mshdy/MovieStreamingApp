@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MovieStreaming.Domain.Aggregates.Movies;
 using MovieStreaming.Domain.Aggregates.Users;
-
 namespace MovieStreaming.Application.DTOs.Mapper
 {
     public class MappingProfile : Profile
@@ -11,8 +10,11 @@ namespace MovieStreaming.Application.DTOs.Mapper
             CreateMap<Movie, CreateMovieDto>();
             CreateMap< CreateMovieDto,Movie>();
 
-            CreateMap<Movie, MovieDto>();
-            CreateMap<Review, AddReviewDto>().ForMember(dest => dest.rating ,opt => opt.MapFrom(src => 0.0));
+            // Inside MappingProfile.cs
+            CreateMap<Movie, MovieDto>()
+                .ForMember(dest => dest.reviews, opt => opt.MapFrom(src => src.Reviews));
+
+            CreateMap<Review, ReviewDto>(); CreateMap<Review, AddReviewDto>().ForMember(dest => dest.rating ,opt => opt.MapFrom(src => 0.0));
             CreateMap<User, CreateUserDto>();
             CreateMap<CastMembers , CastMemberDto>();
         }

@@ -5,12 +5,14 @@ import { movieService, type MovieDto } from '../services/movieService';
 import { useAuth } from '../context/authContext';
 
 // Clean, high-res fallback assets to ensure the UI looks incredible during local testing
+// src/pages/Home.tsx
+
 const mockMovies = [
-  { id: '1', title: 'Inception', posterUrl: 'https://image.tmdb.org/t/p/w500/9gk7adHY9CjST6Y99PaIQpSRfsQ.jpg', rating: 8.8, releaseYear: 2010, duration: '2h 28m' },
-  { id: '2', title: 'Interstellar', posterUrl: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NIvKCUgCYJu7stg.jpg', rating: 8.6, releaseYear: 2014, duration: '2h 49m' },
-  { id: '3', title: 'The Dark Knight', posterUrl: 'https://image.tmdb.org/t/p/w500/qJ2tWGB2mS6tC86m1Xw3gIuK6Y7.jpg', rating: 9.0, releaseYear: 2008, duration: '2h 32m' },
-  { id: '4', title: 'Blade Runner 2048', posterUrl: 'https://image.tmdb.org/t/p/w500/gajva2L0vI4Z6wXSg6z6w66Z67f.jpg', rating: 8.0, releaseYear: 2017, duration: '2h 44m' },
-  { id: '5', title: 'Mad Max: Fury Road', posterUrl: 'https://image.tmdb.org/t/p/w500/8tZYtuWeox6Jb8clvc4gY07U69R.jpg', rating: 8.1, releaseYear: 2015, duration: '2h 00m' }
+  { id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', title: 'Inception', posterUrl: 'https://image.tmdb.org/t/p/w500/9gk7adHY9CjST6Y99PaIQpSRfsQ.jpg', rating: 8.8, releaseYear: 2010, duration: '2h 28m' },
+  { id: '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d', title: 'Interstellar', posterUrl: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NIvKCUgCYJu7stg.jpg', rating: 8.6, releaseYear: 2014, duration: '2h 49m' },
+  { id: '8f7e6d5c-4b3a-2b1a-0f9e-8d7c6b5a4m3b', title: 'The Dark Knight', posterUrl: 'https://image.tmdb.org/t/p/w500/qJ2tWGB2mS6tC86m1Xw3gIuK6Y7.jpg', rating: 9.0, releaseYear: 2008, duration: '2h 32m' },
+  { id: '7c6b5a4m-3b2a-1a0f-9e8d-7c6b5a4m3b2a', title: 'Blade Runner 2048', posterUrl: 'https://image.tmdb.org/t/p/w500/gajva2L0vI4Z6wXSg6z6w66Z67f.jpg', rating: 8.0, releaseYear: 2017, duration: '2h 44m' },
+  { id: '5a4m3b2a-1a0f-9e8d-7c6b-5a4m3b2a1a0f', title: 'Mad Max: Fury Road', posterUrl: 'https://image.tmdb.org/t/p/w500/8tZYtuWeox6Jb8clvc4gY07U69R.jpg', rating: 8.1, releaseYear: 2015, duration: '2h 00m' }
 ];
 
 export const Home: React.FC = () => {
@@ -20,35 +22,37 @@ export const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    async function loadMovies() {
-      try {
-        setLoading(true);
-        setError('');
-        const data = await movieService.getAllMovies();
-        
-        if (data && data.length > 0) {
-          // Map backend data to UI-friendly format safely
-          const formatted = data.map((m: MovieDto) => ({
-            ...m,
-            rating: 8.5, // Placeholder value if not exposed on this DTO row layer yet
-            releaseYear: m.releaseDate ? new Date(m.releaseDate).getFullYear() : 'N/A',
-            duration: m.duration || 'N/A'
-          }));
-          setMovies(formatted);
-        } else {
-          setMovies(mockMovies);
-        }
-      } catch (err) {
-        console.error("Fetch failed, reverting to resilient mock values:", err);
+// Inside src/pages/Home.tsx - Replace your current useEffect block with this:
+useEffect(() => {
+  async function loadMovies() {
+    try {
+      setLoading(true);
+      setError('');
+      const data = await movieService.getAllMovies();
+      
+      if (data && data.length > 0) {
+        const formatted = data.map((m: MovieDto) => ({
+          ...m,
+          rating: 8.5, 
+          releaseYear: m.releaseDate ? new Date(m.releaseDate).getFullYear() : 'N/A',
+          duration: m.duration || 'N/A'
+        }));
+        setMovies(formatted);
+      } else {
+        // Database is connected but empty! Use mock values silently
         setMovies(mockMovies);
-        setError("Unable to connect to the backend movie catalog service.");
-      } finally {
-        setLoading(false);
       }
+    } catch (err) {
+      console.warn("Backend offline or missing root GET endpoint. Defaulting to mock assets.", err);
+      setMovies(mockMovies);
+      // Only set the user-facing error if you don't want to show the mock data fallback banner:
+      // setError("Unable to connect to the backend movie catalog service.");
+    } finally {
+      setLoading(false);
     }
-    loadMovies();
-  }, []);
+  }
+  loadMovies();
+}, []);
 
   // Set up a marquee movie to display on the massive hero spotlight billboard
   const spotlightMovie = movies[0] || mockMovies[0];

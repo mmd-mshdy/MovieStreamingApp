@@ -63,6 +63,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
+    "Method": "UpdateProgress",
+    "RelativePath": "api/movies/progress",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MovieStreaming.Application.Command.WatchHistoryCommands.UpdateWatchProgressCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MovieStreaming.WebApi.Controllers.UserController",
     "Method": "CreateUser",
     "RelativePath": "api/users",

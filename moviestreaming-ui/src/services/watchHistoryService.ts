@@ -1,6 +1,6 @@
 // src/services/watchHistoryService.ts
 import apiClient from './apiClient';
-import type { ContinueWatchingDto, WatchHistoryDto } from '../types/api';
+import type { ContinueWatchingDto, WatchHistoryDto ,UpdateProgressPayload } from '../types/api';
 
 export const watchHistoryService = {
   // GET api/watch-history
@@ -13,5 +13,9 @@ export const watchHistoryService = {
   getContinueWatching: async (): Promise<ContinueWatchingDto[]> => {
     const response = await apiClient.get<ContinueWatchingDto[]>('/watch-history/continue-watching');
     return response.data;
+  },
+  // POST api/watch-history/progress
+   updateWatchProgress : async (payload: UpdateProgressPayload): Promise<void> => {
+    await apiClient.post('/watch-history/progress', payload);
   }
 };

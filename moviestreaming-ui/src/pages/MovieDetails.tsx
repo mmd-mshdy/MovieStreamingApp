@@ -57,7 +57,8 @@ export const MovieDetails: React.FC = () => {
       // Optimistically append the review locally so the user sees it immediately
       const newLocalReview: ReviewDto = {
         id: crypto.randomUUID(), // Temp unique key
-        userId: user.name || "You",
+        userId: user.id || "",
+        userName: user.name || "You",
         rating,
         comment
       };
@@ -163,19 +164,17 @@ export const MovieDetails: React.FC = () => {
 
           {/* Trigger Play action context wrapping the videoUrl link row */}
           <div className="p-6 bg-slate-900 border border-slate-800 rounded-2xl flex flex-wrap items-center justify-between gap-4">
-            <div className="space-y-1">
-              <p className="font-bold text-white text-sm">Ready to stream presentation file?</p>
-              <p className="text-xs text-slate-500">pipeline connects securely to media servers</p>
-            </div>
-            <a 
-              href={movie.videoUrl || "#"} 
-              target="_blank" 
-              rel="noreferrer"
-              className="px-6 py-3 bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-rose-950/40 transition duration-200"
-            >
-              🚀 Initialize Stream Engine
-            </a>
-          </div>
+  <div className="space-y-1">
+    <p className="font-bold text-white text-sm">Ready to stream presentation file?</p>
+    <p className="text-xs text-slate-500">pipeline connects securely to media servers</p>
+  </div>
+  <button 
+    onClick={() => navigate(`/watch/${movie.id}`)} // 🚀 Updates path matrix to launch video dashboard player
+    className="px-6 py-3 bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-rose-950/40 transition duration-200 cursor-pointer"
+  >
+    🚀 Initialize Stream Engine
+  </button>
+</div>
 
           {/* Reviews/Critiques Render Engine Log Stack */}
           <div className="space-y-6">
@@ -187,17 +186,25 @@ export const MovieDetails: React.FC = () => {
               </p>
             ) : (
               <div className="space-y-4">
-                {movie.reviews.map((rev) => (
-                  <div key={rev.id} className="p-5 bg-slate-900/60 border border-slate-900 rounded-xl space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs font-mono tracking-wider font-bold text-slate-400">{rev.userId}</span>
-                      <span className="text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-sm">
-                        ⭐ {rev.rating}/5
-                      </span>
-                    </div>
-                    <p className="text-sm text-slate-300 leading-relaxed">{rev.comment}</p>
-                  </div>
-                ))}
+                {/* Find this section inside your existing movie.reviews.map(...) loop: */}
+
+{movie.reviews.map((rev) => (
+  <div key={rev.id} className="p-5 bg-slate-900/60 border border-slate-900 rounded-xl space-y-2">
+    <div className="flex justify-between items-center">
+      
+      {/* 🛑 CHANGE THIS LINE: Swap rev.userId to rev.userName */}
+      {/* Before: <span className="text-xs font-mono tracking-wider font-bold text-slate-400">{rev.userId}</span> */}
+      <span className="text-sm font-semibold tracking-wide text-slate-300">
+        {rev.userName}
+      </span>
+      
+      <span className="text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-sm">
+        ⭐ {rev.rating}/5
+      </span>
+    </div>
+    <p className="text-sm text-slate-300 leading-relaxed">{rev.comment}</p>
+  </div>
+))}
               </div>
             )}
           </div>

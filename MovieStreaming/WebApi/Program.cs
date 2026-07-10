@@ -107,6 +107,17 @@ builder.Services.AddSwaggerGen(c =>
 
 SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000") // Add your exact React port here
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Essential since your application tracks user session states
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -121,18 +132,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-// Inside MovieStreaming.WebApi/Program.cs
-app.UseCors(policy => policy
-    .AllowAnyOrigin() // Or explicitly .WithOrigins("http://localhost:5173")
-    .AllowAnyMethod()
-    .AllowAnyHeader());
 
-app.UseAuthentication(); // Must sit beneath CORS!
+// 1. ACTIVATE CORS MIDDLEWARE FIRST (Must sit between UseRouting and UseAuthentication) 🌐
+app.UseCors("AllowFrontend");
+
+// 2. RUN SECURITY PIPELINES AFTER CORS ALLOWANCES 🔒
+app.UseAuthentication();
 app.UseAuthorization();
 
-// 3. MIDDLEWARE ORDER MATTERS PER ASP.NET CORE RULES 🚦
-app.UseAuthentication(); // Must be placed before UseAuthorization!
-app.UseAuthorization();
+app.MapControllers();
+app.Run();
 
 app.MapControllers();
 

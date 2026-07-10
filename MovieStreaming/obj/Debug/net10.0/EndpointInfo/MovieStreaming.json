@@ -113,6 +113,37 @@
         }
       }
     },
+    "/api/movies/progress": {
+      "post": {
+        "tags": [
+          "Movie"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWatchProgressCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWatchProgressCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWatchProgressCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/users/{id}": {
       "get": {
         "tags": [
@@ -415,6 +446,20 @@
         "additionalProperties": false
       },
       "UpdateProgressDto": {
+        "type": "object",
+        "properties": {
+          "movieId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "positionSeconds": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateWatchProgressCommand": {
         "type": "object",
         "properties": {
           "movieId": {

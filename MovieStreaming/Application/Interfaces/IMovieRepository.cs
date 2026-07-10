@@ -12,5 +12,6 @@ namespace MovieStreaming.Application.Interfaces
         Task UpdateAsync(Movie movie);
         Task DeleteAsync(Movie movie);
         Task<Movie> AddReview(Guid movieId, Review review);
+        Task<Movie?> GetByIdWithReviewsAsync(Guid id);
     }
 }

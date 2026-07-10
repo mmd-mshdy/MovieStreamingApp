@@ -24,6 +24,12 @@ namespace MovieStreaming.Infrastructure.Repository
             return await _dbConnection.QueryAsync<Movie>(query);
 
         }
+        public async Task<Movie?> GetByIdWithReviewsAsync(Guid id)
+        {
+            return await _context.Movies
+                .Include(m => m.Reviews)
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
         public async Task<Movie> FindById(Guid id)
         {
             // Ensure you have a space after "Movies"

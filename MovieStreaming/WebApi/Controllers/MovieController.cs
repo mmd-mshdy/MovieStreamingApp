@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieStreaming.Application.Command.Movie;
 using MovieStreaming.Application.Command.MovieCommands;
+using MovieStreaming.Application.Command.WatchHistoryCommands;
 using MovieStreaming.Application.DTOs;
 using MovieStreaming.Application.Queries.MovieQueries;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MovieStreaming.WebApi.Controllers
 {
@@ -50,5 +51,12 @@ namespace MovieStreaming.WebApi.Controllers
             var result = await _sender.Send(query);
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
-    }
+
+        [HttpPost("progress")] // Route: POST api/watch-history/progress
+        public async Task<IActionResult> UpdateProgress([FromBody] UpdateWatchProgressCommand command)
+        {
+            await _sender.Send(command);
+            return NoContent(); // 204 Success response with no body content
+        }
+}
 }

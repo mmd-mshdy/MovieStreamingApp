@@ -4,9 +4,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
-import { ProtectedRoute } from './components/ProtectedRoute'; // 1. Import the guard component
+import { ProtectedRoute } from './components/ProtectedRoute'; 
 import { AuthProvider } from './context/authContext';
 import { MovieDetails } from './pages/MovieDetails';
+import { WatchPlayer } from './pages/WatchPlayer';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               <Route path="/" element={<Home />} />
         {/* Dynamic parametric route capturing the backend Guid string */}
         <Route path="/movies/:id" element={<MovieDetails />} />
+        <Route path="/watch/:id" element={<WatchPlayer />} />
             </Route>
             
             {/* 3. PUBLIC ROUTES */}

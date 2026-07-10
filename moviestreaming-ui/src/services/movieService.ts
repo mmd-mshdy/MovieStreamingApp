@@ -5,6 +5,7 @@ import apiClient from "./apiClient";
 export interface ReviewDto {
   id: string;
   userId: string;
+  userName:string;
   rating: number;
   comment: string;
 }
@@ -30,26 +31,25 @@ export interface MovieDto {
 export const movieService = {
   // Using the apiClient instance ensures JWT tokens are attached automatically
   async getAllMovies(): Promise<MovieDto[]> {
-    const { data } = await apiClient.get<MovieDto[]>("/Movie");
+    const { data } = await apiClient.get<MovieDto[]>("/movies");
     return data;
   },
 
   // GET Api/Movie/{id:Guid} - Maps to your backend GetMovieById action
   async getMovieById(id: string): Promise<MovieDto> {
-    const { data } = await apiClient.get<MovieDto>(`/Movie/${id}`);
+    const { data } = await apiClient.get<MovieDto>(`/movies/${id}`);
     return data;
   },
 
   async createMovie(movieData: Omit<MovieDto, 'id' | 'reviews'>): Promise<MovieDto> {
-    const { data } = await apiClient.post<MovieDto>("/Movie/Add Movie", movieData);
+    const { data } = await apiClient.post<MovieDto>("/movies/Add Movie", movieData);
     return data;
   },
 
   // POST Api/Movie/Add Review?movieId={movieId} - Maps to your backend AddReview action
   async addReview(movieId: string, reviewData: AddReviewDto): Promise<any> {
-    const { data } = await apiClient.post("/Movie/Add Review", reviewData, {
-      params: { movieId } // This securely attaches ?movieId=your-guid to the request URL
-    });
+    // Inject the movieId parameter directly into the path segment string
+    const { data } = await apiClient.post(`/movies/${movieId}/reviews`, reviewData);
     return data;
   }
 };

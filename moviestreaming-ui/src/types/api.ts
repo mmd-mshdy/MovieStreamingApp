@@ -47,3 +47,7 @@ export interface WatchHistoryDto {
   watchedAt: string;
   progressPercentage: number;
 }
+export interface UpdateProgressPayload {
+  movieId: string;
+  positionSeconds: number;
+}
