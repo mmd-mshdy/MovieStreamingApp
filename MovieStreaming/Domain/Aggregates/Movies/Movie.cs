@@ -6,6 +6,7 @@ namespace MovieStreaming.Domain.Aggregates.Movies
 {
     public class Movie : AggregateRoot
     {
+        private readonly List<Genre> _genres = new();
         private readonly List<Review> _reviews = new List<Review>();
         private readonly List<CastMembers> _castMembers = new List<CastMembers>();
         public string Title { get; set; }
@@ -19,6 +20,7 @@ namespace MovieStreaming.Domain.Aggregates.Movies
         public string VideoUrl { get; private set; }
 
         public double AverageRating { get; private set; }
+        public IReadOnlyCollection<Genre> Genres => _genres.AsReadOnly();
         public IReadOnlyCollection<CastMembers> CastMembers => _castMembers.AsReadOnly();
         public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
         public Result AddReview(

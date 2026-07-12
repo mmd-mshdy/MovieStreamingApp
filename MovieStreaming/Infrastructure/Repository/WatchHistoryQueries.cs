@@ -42,8 +42,7 @@ public class WatchHistoryQueries : IWatchHistoryQueries
             m.Id AS MovieId,
             m.Title,
             m.PosterUrl,
-            wh.LastPosition,
-            wh.LastWatchedAt AS WatchedAt -- 🚀 FIX: Selected to match the 5th constructor property!
+            wh.LastPosition
         FROM WatchHistories wh
         INNER JOIN Movies m
             ON m.Id = wh.MovieId

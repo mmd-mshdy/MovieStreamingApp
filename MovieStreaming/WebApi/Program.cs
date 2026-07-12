@@ -13,6 +13,7 @@ using MovieStreaming.Infrastructure.Queries;
 using MovieStreaming.Infrastructure.Repositories;
 using MovieStreaming.Infrastructure.Repository;
 using MovieStreaming.Infrastructure.Services;
+using MovieStreamingApp.Application.Interfaces;
 using System.Data;
 using System.Reflection;
 using System.Text;
@@ -75,6 +76,7 @@ builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddHttpClient<IRecommendationService, RecommendationService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

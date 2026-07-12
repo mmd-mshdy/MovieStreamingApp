@@ -11,60 +11,89 @@ export const ContinueWatchingRow: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function hydrateProgressFeed() {
-      try {
-        setLoading(true);
-        // 1. Fetch raw tracking data from backend
-        const rawHistory = await watchHistoryService.getContinueWatching();
-        // 2. Fetch complete catalog to map metadata
-        const catalog = await movieService.getAllMovies();
+  async function hydrateProgressFeed() {
+    try {
+      setLoading(true);
+      const rawHistory = await watchHistoryService.getContinueWatching();
+      const catalog = await movieService.getAllMovies();
 
-        if (!rawHistory || rawHistory.length === 0) {
-          setItems([]);
-          return;
-        }
+      // 🚨 CRITICAL DEBUG LOGS — look at these in your browser console!
+      console.log("=== WATCH HISTORY RAW DATA ===", rawHistory);
+      console.log("=== MOVIE CATALOG SAMPLE ===", catalog?.[0]);
 
-        // 3. Hydrate and match the missing Titles, Posters, and Percentages
+      if (!rawHistory || rawHistory.length === 0) {
+        setItems([]);
+        return;
+      }
+
         const hydrated = rawHistory.map((historyItem: any) => {
-  const matchedMovie = catalog.find((m: MovieDto) => m.id === historyItem.movieId);
+  // 1. Resolve Movie ID with case-insensitivity
+  const historyMovieId = historyItem.movieId ?? historyItem.MovieId;
+  const matchedMovie = catalog.find((m: any) => (m.id ?? m.Id) === historyMovieId);
 
-  // 1. Convert the backend LastPosition string (e.g., "00:15:30") into raw seconds
-  let currentSeconds = 0;
-  const rawPosition = historyItem.lastPosition || historyItem.LastPosition;
-  
-  if (typeof rawPosition === 'string' && rawPosition.includes(':')) {
-    const parts = rawPosition.split(':').map(Number);
-    if (parts.length === 3) {
-      currentSeconds = (parts[0] * 3600) + (parts[1] * 60) + parts[2];
-    } else if (parts.length === 2) {
-      currentSeconds = (parts[0] * 60) + parts[1];
+  // 2. Ultimate robust time string-to-seconds converter
+  const parseTimeToSeconds = (timeInput: any): number => {
+    if (!timeInput) return 0;
+    if (typeof timeInput === 'number') return timeInput;
+    
+    // Fallback if parsed as a .NET serialized object structure
+    if (typeof timeInput === 'object') {
+      const h = timeInput.hours ?? timeInput.Hours ?? 0;
+      const m = timeInput.minutes ?? timeInput.Minutes ?? 0;
+      const s = timeInput.seconds ?? timeInput.Seconds ?? 0;
+      return (h * 3600) + (m * 60) + s;
     }
-  }
+    
+    if (typeof timeInput === 'string') {
+      const cleanStr = timeInput.trim();
+      if (!cleanStr.includes(':')) return parseFloat(cleanStr) || 0;
 
-  // 2. Parse the Movie total duration string ("02:15:00") into seconds
-  let totalSeconds = 0;
-  if (matchedMovie && typeof matchedMovie.duration === 'string' && matchedMovie.duration.includes(':')) {
-    const parts = matchedMovie.duration.split(':').map(Number);
-    if (parts.length === 3) {
-      totalSeconds = (parts[0] * 3600) + (parts[1] * 60) + parts[2];
-    } else if (parts.length === 2) {
-      totalSeconds = (parts[0] * 60) + parts[1];
+      let timePart = cleanStr;
+      let daySeconds = 0;
+
+      // Strip .NET day prefix if present (e.g., "1.02:30:00")
+      if (cleanStr.includes('.') && cleanStr.indexOf('.') < cleanStr.indexOf(':')) {
+        const dayParts = cleanStr.split('.');
+        const days = parseInt(dayParts[0], 10);
+        if (!isNaN(days)) daySeconds = days * 86400;
+        timePart = dayParts.slice(1).join('.');
+      }
+
+      // Drop fractional milliseconds if present (e.g., "02:30:00.1234567")
+      if (timePart.includes('.') && timePart.indexOf('.') > timePart.indexOf(':')) {
+        timePart = timePart.split('.')[0];
+      }
+
+      const parts = timePart.split(':').map(Number);
+      if (parts.length === 3) {
+        return daySeconds + (parts[0] * 3600) + (parts[1] * 60) + parts[2];
+      } else if (parts.length === 2) {
+        return daySeconds + (parts[0] * 60) + parts[1];
+      }
     }
-  } else {
-    totalSeconds = parseFloat(matchedMovie?.duration || '120') * 60;
-  }
+    return 0;
+  };
 
-  // 3. Compute structural progress percentage
+  // 3. Convert fields to clean numeric seconds values
+  const rawPosition = historyItem.lastPosition ?? historyItem.LastPosition;
+  const rawDuration = matchedMovie?.duration ?? matchedMovie?.duration;
+
+  const currentSeconds = parseTimeToSeconds(rawPosition);
+  const totalSeconds = parseTimeToSeconds(rawDuration) || (120 * 60); // 120min fallback
+
+  // 4. Calculate final percentage ratio
   const percentage = totalSeconds > 0 ? (currentSeconds / totalSeconds) * 100 : 0;
+
+  // 🚨 MATH CHECK LOG - Look at this output in your console
+  console.log(`Movie: ${matchedMovie?.title || 'Unknown'} -> Pos: ${currentSeconds}s / Total: ${totalSeconds}s -> Progress: ${percentage}%`);
 
   return {
     ...historyItem,
-    movieTitle: matchedMovie?.title || historyItem.title || "Unknown Movie",
-    posterUrl: matchedMovie?.posterUrl || historyItem.posterUrl || 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=400',
+    movieTitle: matchedMovie?.title ?? historyItem.title ?? "Unknown Movie",
+    posterUrl: matchedMovie?.posterUrl ?? historyItem.posterUrl ?? 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=400',
     displayPercentage: isNaN(percentage) ? 0 : Math.min(Math.max(percentage, 0), 100)
   };
 });
-
         setItems(hydrated);
       } catch (err) {
         console.warn("Could not synchronize historical stream logs.", err);

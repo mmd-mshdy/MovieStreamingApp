@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MovieStreaming.Application.DTOs
+﻿namespace MovieStreaming.Application.DTOs
 {
-    // Added List<ReviewDto> reviews to the data transfer object contract
     public record MovieDto(
         Guid id,
         string title,
@@ -12,6 +8,7 @@ namespace MovieStreaming.Application.DTOs
         DateOnly releaseDate,
         string videoUrl,
         string posterUrl,
-        List<ReviewDto> reviews
+        List<ReviewDto> reviews,
+        List<string> genres 
     );
 }
