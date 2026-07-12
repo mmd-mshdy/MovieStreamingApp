@@ -35,22 +35,22 @@ public class WatchHistoryQueries : IWatchHistoryQueries
         return result.ToList();
     }
 
-    public async Task<List<ContinueWatchingDto>>
-        GetContinueWatching(Guid userId)
+    public async Task<List<ContinueWatchingDto>> GetContinueWatching(Guid userId)
     {
         var sql = """
-            SELECT
-                m.Id AS MovieId,
-                m.Title,
-                m.PosterUrl,
-                wh.LastPosition
-            FROM WatchHistories wh
-            INNER JOIN Movies m
-                ON m.Id = wh.MovieId
-            WHERE wh.UserId = @UserId
-              AND wh.Completed = 0
-            ORDER BY wh.LastWatchedAt DESC
-            """;
+        SELECT
+            m.Id AS MovieId,
+            m.Title,
+            m.PosterUrl,
+            wh.LastPosition,
+            wh.LastWatchedAt AS WatchedAt -- 🚀 FIX: Selected to match the 5th constructor property!
+        FROM WatchHistories wh
+        INNER JOIN Movies m
+            ON m.Id = wh.MovieId
+        WHERE wh.UserId = @UserId
+          AND wh.Completed = 0
+        ORDER BY wh.LastWatchedAt DESC
+        """;
 
         var result =
             await _dbConnection.QueryAsync<ContinueWatchingDto>(

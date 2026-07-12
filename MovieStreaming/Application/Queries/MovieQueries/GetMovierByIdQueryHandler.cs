@@ -36,7 +36,7 @@ namespace MovieStreaming.Application.Queries.MovieQueries
                 reviewDtos.Add(new ReviewDto(r.Id, r.UserId, userEntity?.Name ?? "Anonymous", r.Rating, r.Comment));
             }
 
-            var result = new MovieDto(movie.Id, movie.Title, movie.Description, movie.Duration,movie.ReleaseDate, reviewDtos);
+            var result = new MovieDto(movie.Id, movie.Title, movie.Description, movie.Duration,movie.ReleaseDate,movie.VideoUrl,movie.PosterUrl, reviewDtos);
             return Result.Success<MovieDto>(result);
         }
     }

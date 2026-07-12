@@ -8,6 +8,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './context/authContext';
 import { MovieDetails } from './pages/MovieDetails';
 import { WatchPlayer } from './pages/WatchPlayer';
+import { WatchHistory } from './pages/WatchHistory';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         {/* Dynamic parametric route capturing the backend Guid string */}
         <Route path="/movies/:id" element={<MovieDetails />} />
         <Route path="/watch/:id" element={<WatchPlayer />} />
+        <Route path="/history" element={<WatchHistory />} />
             </Route>
             
             {/* 3. PUBLIC ROUTES */}

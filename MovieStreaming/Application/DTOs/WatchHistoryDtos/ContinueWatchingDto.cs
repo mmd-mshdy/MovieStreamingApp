@@ -1,10 +1,10 @@
-﻿public sealed class ContinueWatchingDto
+﻿
+public record ContinueWatchingDto(
+        Guid MovieId,
+        string Title,
+        string PosterUrl,
+        TimeSpan LastPosition
+    )
 {
-    public Guid MovieId { get; init; }
-
-    public string Title { get; init; } = string.Empty;
-
-    public string PosterUrl { get; init; } = string.Empty;
-
-    public int PositionSeconds { get; init; }
+    public double ProgressPercentage => 0;
 }

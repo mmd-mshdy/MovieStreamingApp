@@ -1,21 +1,42 @@
 // src/services/watchHistoryService.ts
-import apiClient from './apiClient';
-import type { ContinueWatchingDto, WatchHistoryDto ,UpdateProgressPayload } from '../types/api';
+import apiClient from "./apiClient";
+
+export interface ContinueWatchingDto {
+  movieId: string;
+  movieTitle: string;
+  progressPercentage: number;
+  positionSeconds: number;
+  watchedAt: string;
+}
+
+export interface WatchHistoryDto {
+  movieId: string;
+  movieTitle: string;
+  watchedAt: string;
+  positionSeconds: number;
+  progressPercentage: number;
+}
+
+export interface UpdateProgressPayload {
+  movieId: string;
+  positionSeconds: number;
+}
 
 export const watchHistoryService = {
   // GET api/watch-history
-  getHistory: async (): Promise<WatchHistoryDto[]> => {
-    const response = await apiClient.get<WatchHistoryDto[]>('/watch-history');
-    return response.data;
+  async getWatchHistory(): Promise<WatchHistoryDto[]> {
+    const { data } = await apiClient.get<WatchHistoryDto[]>("/../api/watch-history");
+    return data;
   },
 
   // GET api/watch-history/continue-watching
-  getContinueWatching: async (): Promise<ContinueWatchingDto[]> => {
-    const response = await apiClient.get<ContinueWatchingDto[]>('/watch-history/continue-watching');
-    return response.data;
+  async getContinueWatching(): Promise<ContinueWatchingDto[]> {
+    const { data } = await apiClient.get<ContinueWatchingDto[]>("/../api/watch-history/continue-watching");
+    return data;
   },
+
   // POST api/watch-history/progress
-   updateWatchProgress : async (payload: UpdateProgressPayload): Promise<void> => {
-    await apiClient.post('/watch-history/progress', payload);
+  async updateWatchProgress(payload: UpdateProgressPayload): Promise<void> {
+    await apiClient.post("/../api/watch-history/progress", payload);
   }
 };

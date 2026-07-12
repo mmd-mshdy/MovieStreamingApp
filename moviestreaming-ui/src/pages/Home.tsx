@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { movieService, type MovieDto } from '../services/movieService';
 import { useAuth } from '../context/authContext';
+import { ContinueWatchingRow } from '../components/ContinueWatchingRow';
 
 // Clean, high-res fallback assets to ensure the UI looks incredible during local testing
-// src/pages/Home.tsx
-
 const mockMovies = [
   { id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', title: 'Inception', posterUrl: 'https://image.tmdb.org/t/p/w500/9gk7adHY9CjST6Y99PaIQpSRfsQ.jpg', rating: 8.8, releaseYear: 2010, duration: '2h 28m' },
   { id: '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d', title: 'Interstellar', posterUrl: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NIvKCUgCYJu7stg.jpg', rating: 8.6, releaseYear: 2014, duration: '2h 49m' },
@@ -17,47 +16,41 @@ const mockMovies = [
 
 export const Home: React.FC = () => {
   const { logout, user } = useAuth();
-  const navigate = useNavigate(); // React Router programmatic navigation engine
+  const navigate = useNavigate(); 
   const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-// Inside src/pages/Home.tsx - Replace your current useEffect block with this:
-useEffect(() => {
-  async function loadMovies() {
-    try {
-      setLoading(true);
-      setError('');
-      const data = await movieService.getAllMovies();
-      
-      if (data && data.length > 0) {
-        const formatted = data.map((m: MovieDto) => ({
-          ...m,
-          rating: 8.5, 
-          releaseYear: m.releaseDate ? new Date(m.releaseDate).getFullYear() : 'N/A',
-          duration: m.duration || 'N/A'
-        }));
-        setMovies(formatted);
-      } else {
-        // Database is connected but empty! Use mock values silently
+  useEffect(() => {
+    async function loadMovies() {
+      try {
+        setLoading(true);
+        setError('');
+        const data = await movieService.getAllMovies();
+        
+        if (data && data.length > 0) {
+          const formatted = data.map((m: MovieDto) => ({
+            ...m,
+            rating: 8.5, 
+            releaseYear: m.releaseDate ? new Date(m.releaseDate).getFullYear() : 'N/A',
+            duration: m.duration || 'N/A'
+          }));
+          setMovies(formatted);
+        } else {
+          setMovies(mockMovies);
+        }
+      } catch (err) {
+        console.warn("Backend offline or missing root GET endpoint. Defaulting to mock assets.", err);
         setMovies(mockMovies);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.warn("Backend offline or missing root GET endpoint. Defaulting to mock assets.", err);
-      setMovies(mockMovies);
-      // Only set the user-facing error if you don't want to show the mock data fallback banner:
-      // setError("Unable to connect to the backend movie catalog service.");
-    } finally {
-      setLoading(false);
     }
-  }
-  loadMovies();
-}, []);
+    loadMovies();
+  }, []);
 
-  // Set up a marquee movie to display on the massive hero spotlight billboard
   const spotlightMovie = movies[0] || mockMovies[0];
 
-  // Structural handler pushing user context dynamically into the router path matrix
   const handleMovieNavigation = (movieId: string) => {
     navigate(`/movies/${movieId}`);
   };
@@ -74,18 +67,34 @@ useEffect(() => {
             🎬 MOVIE<span className="text-brandAccent">STREAM</span>
           </div>
           <div className="flex items-center gap-6">
-            <span className="text-sm font-medium text-slate-400 hidden sm:inline">Hi, {user?.name || 'Guest'}</span>
-            {user ? (
-              <button 
-                onClick={logout}
-                className="px-4 py-2 text-sm font-semibold bg-slate-800 hover:bg-slate-700 rounded-xl text-white shadow-sm active:scale-95 transition duration-200 cursor-pointer"
-              >
-                Log Out
-              </button>
-            ) : (
-              <a href="/login" className="px-5 py-2 text-sm font-bold bg-brandAccent hover:bg-rose-700 rounded-xl text-white shadow-md shadow-rose-950 transition duration-200">Sign In</a>
-            )}
-          </div>
+  {/* User greeting string */}
+  <span className="text-sm font-medium text-slate-400 hidden sm:inline">
+    Hi, {user?.name || 'Guest'}
+  </span>
+
+  {/* 🚀 NEW: Dynamic Watch History Link Button */}
+  {user && (
+    <button
+      onClick={() => navigate('/history')}
+      className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-amber-400 font-mono transition duration-150 cursor-pointer border-r border-slate-800 pr-6 hidden sm:inline"
+    >
+      🕒Watch History
+    </button>
+  )}
+
+  {user ? (
+    <button 
+      onClick={logout}
+      className="px-4 py-2 text-sm font-semibold bg-slate-800 hover:bg-slate-700 rounded-xl text-white shadow-sm active:scale-95 transition duration-200 cursor-pointer"
+    >
+      Log Out
+    </button>
+  ) : (
+    <a href="/login" className="px-5 py-2 text-sm font-bold bg-brandAccent hover:bg-rose-700 rounded-xl text-white shadow-md shadow-rose-950 transition duration-200">
+      Sign In
+    </a>
+  )}
+</div>
         </div>
       </nav>
 
@@ -97,7 +106,6 @@ useEffect(() => {
             alt="Cinematic Backdrop" 
             className="w-full h-full object-cover opacity-25 filter blur-[0.5px]"
           />
-          {/* Layered vignette masking to dissolve into the page body */}
           <div className="absolute inset-0 bg-gradient-to-t from-brandDark via-brandDark/50 to-transparent"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-brandDark via-transparent to-transparent"></div>
         </div>
@@ -148,6 +156,10 @@ useEffect(() => {
 
         {!loading && (
           <div className="space-y-14">
+            
+            {/* 🍿 Live History Stream Component Placement */}
+            <ContinueWatchingRow />
+
             {/* Category 1: Trending Grid */}
             <div>
               <h2 className="text-xl md:text-2xl font-black tracking-tight text-white mb-6 border-l-4 border-brandAccent pl-3">
@@ -198,7 +210,7 @@ useEffect(() => {
                     className="group relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-800/80 flex flex-col cursor-pointer hover:scale-102 transition duration-200"
                   >
                     <div className="aspect-[2/3] w-full bg-slate-950 overflow-hidden relative">
-                      <img src={movie.posterUrl} alt={movie.title} className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition" />
+                      <img src={movie.posterUrl || 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=400'} alt={movie.title} className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition" />
                     </div>
                   </div>
                 ))}

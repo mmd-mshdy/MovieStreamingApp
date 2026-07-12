@@ -10,6 +10,8 @@ namespace MovieStreaming.Application.DTOs
         string description,
         TimeSpan duration,
         DateOnly releaseDate,
+        string videoUrl,
+        string posterUrl,
         List<ReviewDto> reviews
     );
 }
