@@ -6,6 +6,7 @@ using MovieStreaming.Application.Command.MovieCommands;
 using MovieStreaming.Application.Command.WatchHistoryCommands;
 using MovieStreaming.Application.DTOs;
 using MovieStreaming.Application.Queries.MovieQueries;
+using MovieStreaming.Application.Queries.RecommendationQueries;
 
 namespace MovieStreaming.WebApi.Controllers
 {
@@ -58,5 +59,16 @@ namespace MovieStreaming.WebApi.Controllers
             await _sender.Send(command);
             return NoContent(); // 204 Success response with no body content
         }
-}
+
+        [HttpGet("recommendation-catalog")]
+        public async Task<IActionResult> GetRecommendationCatalog(
+            CancellationToken cancellationToken)
+        {
+            var catalog = await _sender.Send(
+                new GetRecommendationCatalogQuery(),
+                cancellationToken);
+
+            return Ok(catalog);
+        }
+    }
 }

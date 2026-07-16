@@ -1,4 +1,6 @@
 ﻿using MediatR;
-public record GetContinueWatchingQuery
-    : IRequest<List<ContinueWatchingDto>>;
 
+namespace MovieStreaming.Application.Queries.WatchHistoryQueries;
+
+public sealed record GetContinueWatchingQuery
+    : IRequest<List<ContinueWatchingDto>>;

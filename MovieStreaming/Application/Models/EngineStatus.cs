@@ -1,8 +1,12 @@
-﻿    namespace MovieStreaming.Application.Models
+﻿using System.Text.Json.Serialization;
+
+namespace MovieStreaming.Application.Models;
+
+public sealed class EngineStatus
 {
-    public class EngineStatus
-    {
-        public bool Trained { get; set; }
-        public int MovieCount { get; set; }
-    }
+    [JsonPropertyName("trained")]
+    public bool Trained { get; init; }
+
+    [JsonPropertyName("movieCount")]
+    public int MovieCount { get; init; }
 }

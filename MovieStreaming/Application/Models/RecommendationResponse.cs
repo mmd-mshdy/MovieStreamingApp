@@ -1,8 +1,13 @@
-﻿namespace MovieStreaming.Application.Models
+﻿using System.Text.Json.Serialization;
+
+namespace MovieStreaming.Application.Models;
+
+public sealed class RecommendationResponse
 {
-    public class RecommendationResponse
+    [JsonPropertyName("recommendations")]
+    public List<RecommendationResult> Recommendations
     {
-        // Matches the JSON key returned by your Python code
-        public List<int> RecommendedMovieIds { get; set; }
-    }
+        get;
+        init;
+    } = [];
 }

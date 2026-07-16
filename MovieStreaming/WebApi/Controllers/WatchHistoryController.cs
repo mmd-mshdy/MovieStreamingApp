@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieStreaming.Application.Command.WatchHistoryCommands;
+using MovieStreaming.Application.Queries.WatchHistoryQueries;
 
 namespace MovieStreaming.WebApi.Controllers
 {
@@ -23,11 +24,16 @@ namespace MovieStreaming.WebApi.Controllers
             var result = await _sender.Send(new GetWatchHistoryQuery());
             return Ok(result);
         }
-
+        [Authorize]
+        [Authorize]
         [HttpGet("continue-watching")]
-        public async Task<IActionResult> GetContinueWatching()
+        public async Task<ActionResult<List<ContinueWatchingDto>>> GetContinueWatching(
+    CancellationToken cancellationToken)
         {
-            var result = await _sender.Send(new GetContinueWatchingQuery());
+            var result = await _sender.Send(
+                new GetContinueWatchingQuery(),
+                cancellationToken);
+
             return Ok(result);
         }
 

@@ -3,10 +3,11 @@ import apiClient from "./apiClient";
 
 export interface ContinueWatchingDto {
   movieId: string;
-  movieTitle: string;
-  progressPercentage: number;
+  title: string;
+  posterUrl: string;
   positionSeconds: number;
-  watchedAt: string;
+  durationSeconds: number;
+  progressPercentage: number;
 }
 
 export interface WatchHistoryDto {

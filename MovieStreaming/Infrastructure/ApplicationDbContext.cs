@@ -17,6 +17,19 @@ namespace MovieStreaming.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Movie>()
+                .HasMany(movie => movie.Genres)
+                .WithMany()
+                .UsingEntity(join => join.ToTable("MovieGenres"));
+
+            modelBuilder.Entity<Movie>()
+                .Navigation(movie => movie.Genres)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            modelBuilder.Entity<Movie>()
+                .Navigation(movie => movie.CastMembers)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
             modelBuilder.Entity<User>()
                 .OwnsOne(u => u.WalletBallance, moneyBuilder =>
                 {

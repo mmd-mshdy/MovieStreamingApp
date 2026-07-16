@@ -79,6 +79,52 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.MovieController",
+    "Method": "GetRecommendationCatalog",
+    "RelativePath": "api/movies/recommendation-catalog",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.RecommendationController",
+    "Method": "GetRecommendations",
+    "RelativePath": "api/recommendations",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "count",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IReadOnlyList\u00601[[MovieStreaming.Application.DTOs.RecommendedMovieDto, MovieStreaming, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MovieStreaming.WebApi.Controllers.RecommendationController",
+    "Method": "GetStatus",
+    "RelativePath": "api/recommendations/status",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MovieStreaming.WebApi.Controllers.UserController",
     "Method": "CreateUser",
     "RelativePath": "api/users",
@@ -144,7 +190,17 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[ContinueWatchingDto, MovieStreaming, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "MovieStreaming.WebApi.Controllers.WatchHistoryController",

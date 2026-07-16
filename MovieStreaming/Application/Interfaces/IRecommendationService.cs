@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using MovieStreaming.Application.Models;
 
-namespace MovieStreamingApp.Application.Interfaces
+namespace MovieStreaming.Application.Interfaces;
+
+public interface IRecommendationService
 {
-    public interface IRecommendationService
-    {
-        Task<List<int>> GetRecommendationsAsync(List<int> watchedIds, int topN);
-        Task<bool> IsEngineReadyAsync();
-    }
+    Task<IReadOnlyList<RecommendationResult>>
+        GetRecommendationsAsync(
+            RecommendationRequest request,
+            CancellationToken cancellationToken = default);
+
+    Task<bool> IsEngineReadyAsync(
+        CancellationToken cancellationToken = default);
 }

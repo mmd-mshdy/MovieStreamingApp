@@ -113,5 +113,23 @@ namespace MovieStreaming.Infrastructure.Repository
             // 5. Return the movie (potentially with its updated reviews list if you included it).
             return movieToUpdate;
         }
+        public async Task<IReadOnlyList<Movie>>
+    GetByIdsWithDetailsAsync(
+        IReadOnlyCollection<Guid> movieIds,
+        CancellationToken cancellationToken = default)
+        {
+            if (movieIds.Count == 0)
+            {
+                return [];
+            }
+
+            return await _context.Movies
+                .AsNoTracking()
+                .Include(movie => movie.Reviews)
+                .Include(movie => movie.Genres)
+                .Include(movie => movie.CastMembers)
+                .Where(movie => movieIds.Contains(movie.Id))
+                .ToListAsync(cancellationToken);
+        }
     }
 }

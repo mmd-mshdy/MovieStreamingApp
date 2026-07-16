@@ -32,19 +32,20 @@ export interface MovieDto {
   reviews?: ReviewDto[];
 }
 
-export interface ContinueWatchingDto {
-  id: string;
+export interface WatchHistoryDto {
   movieId: string;
-  movieTitle: string;
-  watchedAt: string;
-  progressPercentage: number;
+  title: string;
+  posterUrl: string;
+  positionSeconds: number;
+  lastWatchedAt: string;
 }
 
-export interface WatchHistoryDto {
-  id: string;
+export interface ContinueWatchingDto {
   movieId: string;
-  movieTitle: string;
-  watchedAt: string;
+  title: string;
+  posterUrl: string;
+  positionSeconds: number;
+  durationSeconds: number;
   progressPercentage: number;
 }
 export interface UpdateProgressPayload {

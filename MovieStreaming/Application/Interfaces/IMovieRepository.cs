@@ -13,5 +13,6 @@ namespace MovieStreaming.Application.Interfaces
         Task DeleteAsync(Movie movie);
         Task<Movie> AddReview(Guid movieId, Review review);
         Task<Movie?> GetByIdWithReviewsAsync(Guid id);
+        Task<IReadOnlyList<Movie>> GetByIdsWithDetailsAsync(IReadOnlyCollection<Guid> movieIds,CancellationToken cancellationToken = default);
     }
 }

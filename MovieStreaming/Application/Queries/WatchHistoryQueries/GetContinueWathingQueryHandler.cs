@@ -1,20 +1,20 @@
 ﻿using MediatR;
 using MovieStreaming.Application.Interfaces;
 
-public class GetContinueWatchingQueryHandler
-    : IRequestHandler<
-        GetContinueWatchingQuery,
-        List<ContinueWatchingDto>>
+namespace MovieStreaming.Application.Queries.WatchHistoryQueries;
+
+public sealed class GetContinueWatchingQueryHandler
+    : IRequestHandler<GetContinueWatchingQuery, List<ContinueWatchingDto>>
 {
     private readonly IWatchHistoryQueries _queries;
-    private readonly ICurrentUserService _currentUser;
+    private readonly ICurrentUserService _currentUserService;
 
     public GetContinueWatchingQueryHandler(
         IWatchHistoryQueries queries,
-        ICurrentUserService currentUser)
+        ICurrentUserService currentUserService)
     {
         _queries = queries;
-        _currentUser = currentUser;
+        _currentUserService = currentUserService;
     }
 
     public async Task<List<ContinueWatchingDto>> Handle(
@@ -22,6 +22,7 @@ public class GetContinueWatchingQueryHandler
         CancellationToken cancellationToken)
     {
         return await _queries.GetContinueWatching(
-            _currentUser.UserId);
+            _currentUserService.UserId,
+            cancellationToken);
     }
 }

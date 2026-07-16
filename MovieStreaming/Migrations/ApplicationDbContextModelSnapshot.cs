@@ -37,6 +37,21 @@ namespace MovieStreaming.Migrations
                     b.ToTable("CastMembersMovie");
                 });
 
+            modelBuilder.Entity("GenreMovie", b =>
+                {
+                    b.Property<Guid>("GenresId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MovieId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("GenresId", "MovieId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MovieGenres", (string)null);
+                });
+
             modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.CastMembers", b =>
                 {
                     b.Property<Guid>("Id")
@@ -67,6 +82,21 @@ namespace MovieStreaming.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CastMembers");
+                });
+
+            modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Genre", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genre");
                 });
 
             modelBuilder.Entity("MovieStreaming.Domain.Aggregates.Movies.Movie", b =>
@@ -224,6 +254,21 @@ namespace MovieStreaming.Migrations
                     b.HasOne("MovieStreaming.Domain.Aggregates.Movies.Movie", null)
                         .WithMany()
                         .HasForeignKey("moviesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GenreMovie", b =>
+                {
+                    b.HasOne("MovieStreaming.Domain.Aggregates.Movies.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieStreaming.Domain.Aggregates.Movies.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
