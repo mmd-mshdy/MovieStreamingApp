@@ -20,14 +20,17 @@ namespace MovieStreaming.Infrastructure.Repository
         }
         public async Task<IEnumerable<Movie>> GetAllAsync()
         {
-            var query = @"SELECT * FROM Movies";
-            return await _dbConnection.QueryAsync<Movie>(query);
+            return await _context.Movies
+                .Include(m => m.Reviews)
+                .Include(m => m.Genres)
+                .ToListAsync();
 
         }
         public async Task<Movie?> GetByIdWithReviewsAsync(Guid id)
         {
             return await _context.Movies
                 .Include(m => m.Reviews)
+                .Include(m => m.Genres)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
         public async Task<Movie> FindById(Guid id)
@@ -44,15 +47,31 @@ namespace MovieStreaming.Infrastructure.Repository
             return movie;
 
         }
-        public async Task<IEnumerable<Movie>> FindByTitle(string title) => await _context.Movies
-            .AsNoTracking()
-            .Where(m => m.Title == title)
-            .ToListAsync();
+        public async Task<IReadOnlyList<Movie>> SearchByTitleAsync(
+    string searchTerm,
+    CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return [];
+            }
 
-        public async Task<IEnumerable<Movie>> FindByCastMember(string name) => await _context.Movies
-                    .Where(m => m.CastMembers.Any(cm => cm.Name == name))
-                    .Include(m => m.CastMembers)
-                    .ToListAsync();
+            var normalizedSearchTerm = searchTerm.Trim();
+
+            return await _context.Movies
+                .AsNoTracking()
+                .Include(movie => movie.Reviews)
+                .Include(movie => movie.Genres)
+                .Where(movie =>
+                    EF.Functions.Like(
+                        movie.Title,
+                        $"%{normalizedSearchTerm}%"))
+                .OrderBy(movie => movie.Title)
+                .Take(20)
+                .ToListAsync(cancellationToken);
+        }
+
+
         public async Task CreateAsync(Movie movie)
         {
             if (movie == null) throw new ArgumentNullException(nameof(movie));
@@ -127,7 +146,6 @@ namespace MovieStreaming.Infrastructure.Repository
                 .AsNoTracking()
                 .Include(movie => movie.Reviews)
                 .Include(movie => movie.Genres)
-                .Include(movie => movie.CastMembers)
                 .Where(movie => movieIds.Contains(movie.Id))
                 .ToListAsync(cancellationToken);
         }

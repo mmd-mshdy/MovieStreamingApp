@@ -5,6 +5,5 @@ public sealed record RecommendationMovie(
     string Title,
     string Description,
     IReadOnlyList<string> Genres,
-    IReadOnlyList<string> CastMembers,
     int ReleaseYear,
     double AverageRating);

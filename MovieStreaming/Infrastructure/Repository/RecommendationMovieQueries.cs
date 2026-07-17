@@ -21,7 +21,6 @@ public sealed class RecommendationMovieQueries : IRecommendationMovieQueries
         var movies = await _context.Movies
             .AsNoTracking()
             .Include(movie => movie.Genres)
-            .Include(movie => movie.CastMembers)
             .OrderBy(movie => movie.Title)
             .ToListAsync(cancellationToken);
 
@@ -32,12 +31,6 @@ public sealed class RecommendationMovieQueries : IRecommendationMovieQueries
                 Description: movie.Description,
                 Genres: movie.Genres
                     .Select(genre => genre.Name)
-                    .Where(name => !string.IsNullOrWhiteSpace(name))
-                    .Distinct(StringComparer.OrdinalIgnoreCase)
-                    .OrderBy(name => name)
-                    .ToList(),
-                CastMembers: movie.CastMembers
-                    .Select(member => $"{member.Name} {member.FamilyName}".Trim())
                     .Where(name => !string.IsNullOrWhiteSpace(name))
                     .Distinct(StringComparer.OrdinalIgnoreCase)
                     .OrderBy(name => name)

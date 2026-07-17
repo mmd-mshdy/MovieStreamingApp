@@ -21,34 +21,43 @@ public class GetMovieByIdQueryHandler
     }
 
     public async Task<Result<MovieDto>> Handle(
-        GetMovieByIdQuery request,
-        CancellationToken cancellationToken)
+    GetMovieByIdQuery request,
+    CancellationToken cancellationToken)
     {
-        var movie = await _movieRepository.GetByIdWithReviewsAsync(request.id);
+        var movie =
+            await _movieRepository.GetByIdWithReviewsAsync(
+                request.id);
 
         if (movie is null)
         {
             return Result.Failure<MovieDto>(
-                new ("Movie.NotFound", "Movie not found."));
+                new (
+                    "Movie.NotFound",
+                    "Movie not found."));
         }
 
         var reviewDtos = new List<ReviewDto>();
 
         foreach (var review in movie.Reviews)
         {
-            var user = await _userRepository.GetUserById(review.UserId);
+            var reviewUser =
+                await _userRepository.GetUserById(
+                    review.UserId);
 
             reviewDtos.Add(
                 new ReviewDto(
                     review.Id,
                     review.UserId,
-                    user?.Name ?? "Anonymous",
+                    reviewUser?.Name ?? "Anonymous",
                     review.Rating,
                     review.Comment));
         }
 
         var genreNames = movie.Genres
             .Select(genre => genre.Name)
+            .Where(name =>
+                !string.IsNullOrWhiteSpace(name))
+            .Distinct()
             .ToList();
 
         var movieDto = new MovieDto(

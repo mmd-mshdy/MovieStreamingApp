@@ -5,6 +5,27 @@
     "version": "v1"
   },
   "paths": {
+    "/api/movies/search": {
+      "get": {
+        "tags": [
+          "Movie"
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/movies/{id}": {
       "get": {
         "tags": [
@@ -697,10 +718,10 @@
     },
     "securitySchemes": {
       "Bearer": {
-        "type": "apiKey",
-        "description": "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
-        "name": "Authorization",
-        "in": "header"
+        "type": "http",
+        "description": "Enter the JWT token only.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   },

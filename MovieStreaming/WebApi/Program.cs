@@ -80,7 +80,6 @@ builder.Services.AddScoped<IWatchHistoryQueries, WatchHistoryQueries>();
 builder.Services.AddScoped<IWatchHistoryRepository, WatchHistoryRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ICastMemberRepository, CastMemberRepository>();
 builder.Services.AddScoped<IWatchListRepository, WatchListRepository>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IWatchListQueries, WatchListQueries>();
@@ -119,26 +118,36 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movie Streaming API", Version = "v1" });
-
-    // 1. Define the Bearer Auth scheme
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
-    });
-
-    // 2. Updated for .NET 10: Use delegate-based function to inject security requirements smoothly
-    c.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
-    {
+    c.SwaggerDoc(
+        "v1",
+        new OpenApiInfo
         {
-            new OpenApiSecuritySchemeReference("Bearer", doc),
-            new List<string>()
-        }
-    });
+            Title = "Movie Streaming API",
+            Version = "v1"
+        });
+
+    c.AddSecurityDefinition(
+        "Bearer",
+        new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Description = "Enter the JWT token only.",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT"
+        });
+
+    c.AddSecurityRequirement(doc =>
+        new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecuritySchemeReference(
+                    "Bearer",
+                    doc),
+                new List<string>()
+            }
+        });
 });
 
 SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());

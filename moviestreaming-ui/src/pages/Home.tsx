@@ -1,224 +1,517 @@
 // src/pages/Home.tsx
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { movieService, type MovieDto } from '../services/movieService';
-import { useAuth } from '../context/authContext';
-import { ContinueWatchingRow } from '../components/ContinueWatchingRow';
 
-// Clean, high-res fallback assets to ensure the UI looks incredible during local testing
-const mockMovies = [
-  { id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', title: 'Inception', posterUrl: 'https://image.tmdb.org/t/p/w500/9gk7adHY9CjST6Y99PaIQpSRfsQ.jpg', rating: 8.8, releaseYear: 2010, duration: '2h 28m' },
-  { id: '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d', title: 'Interstellar', posterUrl: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NIvKCUgCYJu7stg.jpg', rating: 8.6, releaseYear: 2014, duration: '2h 49m' },
-  { id: '8f7e6d5c-4b3a-2b1a-0f9e-8d7c6b5a4m3b', title: 'The Dark Knight', posterUrl: 'https://image.tmdb.org/t/p/w500/qJ2tWGB2mS6tC86m1Xw3gIuK6Y7.jpg', rating: 9.0, releaseYear: 2008, duration: '2h 32m' },
-  { id: '7c6b5a4m-3b2a-1a0f-9e8d-7c6b5a4m3b2a', title: 'Blade Runner 2048', posterUrl: 'https://image.tmdb.org/t/p/w500/gajva2L0vI4Z6wXSg6z6w66Z67f.jpg', rating: 8.0, releaseYear: 2017, duration: '2h 44m' },
-  { id: '5a4m3b2a-1a0f-9e8d-7c6b-5a4m3b2a1a0f', title: 'Mad Max: Fury Road', posterUrl: 'https://image.tmdb.org/t/p/w500/8tZYtuWeox6Jb8clvc4gY07U69R.jpg', rating: 8.1, releaseYear: 2015, duration: '2h 00m' }
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  movieService,
+  type MovieDto,
+} from "../services/movieService";
+import { useAuth } from "../context/authContext";
+import { ContinueWatchingRow } from "../components/ContinueWatchingRow";
+import { RecommendedForYouRow } from "../components/RecommendedForYouRow";
+import { MovieSearchBar } from "../components/MovieSearchBar";
+
+const fallbackPoster =
+  "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=400";
+
+interface HomeMovie extends MovieDto {
+  rating: number;
+  releaseYear: number | string;
+}
+
+const mockMovies: HomeMovie[] = [
+  {
+    id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+    title: "Inception",
+    description:
+      "A skilled thief enters people's dreams to steal secrets and plant an idea.",
+    posterUrl:
+      "https://image.tmdb.org/t/p/w500/9gk7adHY9CjST6Y99PaIQpSRfsQ.jpg",
+    videoUrl: "",
+    rating: 4.8,
+    releaseYear: 2010,
+    releaseDate: "2010-07-16",
+    duration: "02:28:00",
+    reviews: [],
+    genres: ["Science Fiction", "Thriller"],
+  },
+  {
+    id: "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+    title: "Interstellar",
+    description:
+      "A team of explorers travels through a wormhole in space to ensure humanity's survival.",
+    posterUrl:
+      "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NIvKCUgCYJu7stg.jpg",
+    videoUrl: "",
+    rating: 4.7,
+    releaseYear: 2014,
+    releaseDate: "2014-11-07",
+    duration: "02:49:00",
+    reviews: [],
+    genres: ["Science Fiction", "Drama"],
+  },
+  {
+    id: "8f7e6d5c-4b3a-2b1a-0f9e-8d7c6b5a4c3b",
+    title: "The Dark Knight",
+    description:
+      "Batman faces a criminal mastermind who plunges Gotham into chaos.",
+    posterUrl:
+      "https://image.tmdb.org/t/p/w500/qJ2tWGB2mS6tC86m1Xw3gIuK6Y7.jpg",
+    videoUrl: "",
+    rating: 4.9,
+    releaseYear: 2008,
+    releaseDate: "2008-07-18",
+    duration: "02:32:00",
+    reviews: [],
+    genres: ["Action", "Crime", "Drama"],
+  },
+  {
+    id: "7c6b5a4c-3b2a-1a0f-9e8d-7c6b5a4c3b2a",
+    title: "Blade Runner 2049",
+    description:
+      "A young blade runner uncovers a secret that could destabilize society.",
+    posterUrl:
+      "https://image.tmdb.org/t/p/w500/gajva2L0vI4Z6wXSg6z6w66Z67f.jpg",
+    videoUrl: "",
+    rating: 4.4,
+    releaseYear: 2017,
+    releaseDate: "2017-10-06",
+    duration: "02:44:00",
+    reviews: [],
+    genres: ["Science Fiction", "Mystery"],
+  },
+  {
+    id: "5a4c3b2a-1a0f-9e8d-7c6b-5a4c3b2a1a0f",
+    title: "Mad Max: Fury Road",
+    description:
+      "A rebel warrior joins a group escaping a tyrant across a ruined wasteland.",
+    posterUrl:
+      "https://image.tmdb.org/t/p/w500/8tZYtuWeox6Jb8clvc4gY07U69R.jpg",
+    videoUrl: "",
+    rating: 4.5,
+    releaseYear: 2015,
+    releaseDate: "2015-05-15",
+    duration: "02:00:00",
+    reviews: [],
+    genres: ["Action", "Adventure"],
+  },
 ];
 
-export const Home: React.FC = () => {
+function calculateAverageRating(movie: MovieDto): number {
+  const ratings =
+    movie.reviews
+      ?.map((review) => review.rating)
+      .filter((rating) => Number.isFinite(rating)) ?? [];
+
+  if (ratings.length === 0) {
+    return 0;
+  }
+
+  const total = ratings.reduce(
+    (sum, rating) => sum + rating,
+    0
+  );
+
+  return total / ratings.length;
+}
+
+export const Home = () => {
   const { logout, user } = useAuth();
-  const navigate = useNavigate(); 
-  const [movies, setMovies] = useState<any[]>([]);
+  const navigate = useNavigate();
+
+  const [movies, setMovies] =
+    useState<HomeMovie[]>(mockMovies);
+
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    let isMounted = true;
+
     async function loadMovies() {
       try {
         setLoading(true);
-        setError('');
+        setError("");
+
         const data = await movieService.getAllMovies();
-        
-        if (data && data.length > 0) {
-          const formatted = data.map((m: MovieDto) => ({
-            ...m,
-            rating: 8.5, 
-            releaseYear: m.releaseDate ? new Date(m.releaseDate).getFullYear() : 'N/A',
-            duration: m.duration || 'N/A'
-          }));
-          setMovies(formatted);
+
+        if (!isMounted) {
+          return;
+        }
+
+        if (Array.isArray(data) && data.length > 0) {
+          const formattedMovies: HomeMovie[] =
+            data.map((movie: MovieDto) => ({
+              ...movie,
+
+              rating:
+                calculateAverageRating(movie),
+
+              releaseYear: movie.releaseDate
+                ? new Date(
+                    movie.releaseDate
+                  ).getFullYear()
+                : "N/A",
+
+              duration:
+                movie.duration || "N/A",
+
+              reviews:
+                movie.reviews ?? [],
+
+              genres:
+                movie.genres ?? [],
+            }));
+            console.log(
+  "Formatted movies:",
+  formattedMovies.map((movie) => ({
+    title: movie.title,
+    genres: movie.genres,
+  }))
+);
+
+          setMovies(formattedMovies);
         } else {
           setMovies(mockMovies);
         }
-      } catch (err) {
-        console.warn("Backend offline or missing root GET endpoint. Defaulting to mock assets.", err);
-        setMovies(mockMovies);
+      } catch (loadError) {
+        console.warn(
+          "Could not load movies from the backend. Using fallback movies.",
+          loadError
+        );
+
+        if (isMounted) {
+          setMovies(mockMovies);
+          setError(
+            "The movie catalog could not be refreshed. Showing fallback content."
+          );
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
-    loadMovies();
+
+    void loadMovies();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const spotlightMovie = movies[0] || mockMovies[0];
+  const spotlightMovie =
+    movies[0] ?? mockMovies[0];
 
-  const handleMovieNavigation = (movieId: string) => {
+  const handleMovieNavigation = (
+    movieId: string
+  ) => {
     navigate(`/movies/${movieId}`);
   };
 
+  const handleWatchNavigation = (
+    movieId: string
+  ) => {
+    navigate(`/watch/${movieId}`);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
-    <div className="min-h-screen bg-brandDark text-slate-100 font-sans antialiased selection:bg-brandAccent selection:text-white">
-      {/* Premium Header Navigation */}
-      <nav className="border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50 transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div 
-            onClick={() => navigate('/')}
-            className="text-xl font-black tracking-widest text-white cursor-pointer hover:opacity-95"
-          >
-            🎬 MOVIE<span className="text-brandAccent">STREAM</span>
-          </div>
-          <div className="flex items-center gap-6">
-  {/* User greeting string */}
-  <span className="text-sm font-medium text-slate-400 hidden sm:inline">
-    Hi, {user?.name || 'Guest'}
-  </span>
+    <div className="min-h-screen bg-brandDark font-sans text-slate-100 antialiased selection:bg-brandAccent selection:text-white">
+      {/* Header */}
+      <nav className="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+  <button
+    type="button"
+    onClick={() => navigate("/")}
+    className="shrink-0 cursor-pointer text-xl font-black tracking-widest text-white transition hover:opacity-95"
+  >
+    🎬 MOVIE
+    <span className="text-brandAccent">
+      STREAM
+    </span>
+  </button>
 
-  {/* 🚀 NEW: Dynamic Watch History Link Button */}
-  {user && (
-    <button
-      onClick={() => navigate('/history')}
-      className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-amber-400 font-mono transition duration-150 cursor-pointer border-r border-slate-800 pr-6 hidden sm:inline"
-    >
-      🕒Watch History
-    </button>
-  )}
+  <div className="hidden flex-1 justify-center md:flex">
+    <MovieSearchBar />
+  </div>
 
-  {user ? (
-    <button 
-      onClick={logout}
-      className="px-4 py-2 text-sm font-semibold bg-slate-800 hover:bg-slate-700 rounded-xl text-white shadow-sm active:scale-95 transition duration-200 cursor-pointer"
-    >
-      Log Out
-    </button>
-  ) : (
-    <a href="/login" className="px-5 py-2 text-sm font-bold bg-brandAccent hover:bg-rose-700 rounded-xl text-white shadow-md shadow-rose-950 transition duration-200">
-      Sign In
-    </a>
-  )}
+  <div className="ml-auto flex shrink-0 items-center gap-4 sm:gap-6">
+    <span className="hidden text-sm font-medium text-slate-400 lg:inline">
+      Hi, {user?.name || "Guest"}
+    </span>
+
+    {user && (
+      <button
+        type="button"
+        onClick={() =>
+          navigate("/history")
+        }
+        className="hidden cursor-pointer border-r border-slate-800 pr-6 font-mono text-xs font-bold uppercase tracking-wider text-slate-400 transition hover:text-amber-400 lg:inline"
+      >
+        🕒 Watch History
+      </button>
+    )}
+
+    {user ? (
+      <button
+        type="button"
+        onClick={logout}
+        className="cursor-pointer rounded-xl bg-slate-800 px-4 py-2 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-slate-700 active:scale-95"
+      >
+        Log Out
+      </button>
+    ) : (
+      <button
+        type="button"
+        onClick={() =>
+          navigate("/login")
+        }
+        className="rounded-xl bg-brandAccent px-5 py-2 text-sm font-bold text-white shadow-md shadow-rose-950 transition duration-200 hover:bg-rose-700"
+      >
+        Sign In
+      </button>
+    )}
+  </div>
 </div>
-        </div>
+<div className="border-b border-slate-800 bg-slate-950 px-4 py-3 md:hidden">
+  <MovieSearchBar />
+</div>
       </nav>
 
-      {/* Hero Spotlight Billboard */}
-      <div className="relative w-full h-[60vh] md:h-[75vh] flex items-end border-b border-slate-900/40">
+      {/* Hero */}
+      <section className="relative flex h-[60vh] w-full items-end border-b border-slate-900/40 md:h-[75vh]">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1600" 
-            alt="Cinematic Backdrop" 
-            className="w-full h-full object-cover opacity-25 filter blur-[0.5px]"
+          <img
+            src={
+              spotlightMovie.posterUrl ||
+              fallbackPoster
+            }
+            alt={spotlightMovie.title}
+            className="h-full w-full object-cover opacity-30 blur-[0.5px]"
+            onError={(event) => {
+              event.currentTarget.src =
+                fallbackPoster;
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-brandDark via-brandDark/50 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-brandDark via-transparent to-transparent"></div>
+
+          <div className="absolute inset-0 bg-gradient-to-t from-brandDark via-brandDark/60 to-transparent" />
+
+          <div className="absolute inset-0 bg-gradient-to-r from-brandDark via-brandDark/40 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-14 md:pb-24">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-brandAccent/10 text-brandAccent border border-brandAccent/20">
-            🎬 Talk Feature Presentation
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 md:pb-24 lg:px-8">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-brandAccent/20 bg-brandAccent/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brandAccent">
+            🎬 Featured Presentation
           </span>
-          <h1 className="text-4xl md:text-6xl font-black text-white mt-4 mb-4 tracking-tight max-w-3xl drop-shadow-lg">
-            {spotlightMovie?.title}
+
+          <h1 className="mt-4 mb-4 max-w-3xl text-4xl font-black tracking-tight text-white drop-shadow-lg md:text-6xl">
+            {spotlightMovie.title}
           </h1>
-          <p className="text-slate-300 text-base md:text-lg max-w-2xl font-medium leading-relaxed mb-6 drop-shadow-sm">
-            Stream your absolute favorite movies and originals directly through your high-concurrency .NET Clean Architecture rendering pipeline.
+
+          <p className="mb-3 max-w-2xl text-base font-medium leading-relaxed text-slate-300 drop-shadow-sm md:text-lg">
+            {spotlightMovie.description ||
+              "Discover movies selected from our streaming catalog."}
           </p>
+
+          <div className="mb-6 flex flex-wrap items-center gap-3 text-sm text-slate-300">
+            <span>
+              {spotlightMovie.releaseYear}
+            </span>
+
+            <span className="text-slate-600">
+              •
+            </span>
+
+            <span>
+              {spotlightMovie.duration}
+            </span>
+
+            {spotlightMovie.rating > 0 && (
+              <>
+                <span className="text-slate-600">
+                  •
+                </span>
+
+                <span className="font-bold text-amber-400">
+                  ⭐{" "}
+                  {spotlightMovie.rating.toFixed(
+                    1
+                  )}
+                </span>
+              </>
+            )}
+
+            {spotlightMovie.genres.length >
+              0 && (
+              <>
+                <span className="text-slate-600">
+                  •
+                </span>
+
+                <span>
+                  {spotlightMovie.genres
+                    .slice(0, 3)
+                    .join(" · ")}
+                </span>
+              </>
+            )}
+          </div>
+
           <div className="flex flex-wrap gap-4">
-            <button 
-              onClick={() => spotlightMovie && handleMovieNavigation(spotlightMovie.id)}
-              className="px-6 py-3 bg-brandAccent hover:bg-rose-700 text-white font-bold text-sm md:text-base rounded-xl shadow-lg shadow-rose-900/30 transform active:scale-95 transition duration-200 cursor-pointer"
+            <button
+              type="button"
+              onClick={() =>
+                handleWatchNavigation(
+                  spotlightMovie.id
+                )
+              }
+              className="cursor-pointer rounded-xl bg-brandAccent px-6 py-3 text-sm font-bold text-white shadow-lg shadow-rose-900/30 transition duration-200 hover:bg-rose-700 active:scale-95 md:text-base"
             >
               ▶ Play Now
             </button>
-            <button 
-              onClick={() => spotlightMovie && handleMovieNavigation(spotlightMovie.id)}
-              className="px-6 py-3 bg-slate-800/80 hover:bg-slate-700 text-white font-bold text-sm md:text-base rounded-xl border border-slate-700 transition duration-200 cursor-pointer"
+
+            <button
+              type="button"
+              onClick={() =>
+                handleMovieNavigation(
+                  spotlightMovie.id
+                )
+              }
+              className="cursor-pointer rounded-xl border border-slate-700 bg-slate-800/80 px-6 py-3 text-sm font-bold text-white transition duration-200 hover:bg-slate-700 md:text-base"
             >
               ℹ Details
             </button>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Main Content Sections */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-20">
-        
-        {/* Loading Skeletons */}
+      {/* Main Content */}
+      <main className="relative z-20 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {loading && (
           <div>
-            <div className="h-7 w-40 bg-slate-800 animate-pulse rounded-lg mb-6"></div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="animate-pulse bg-slate-800 aspect-[2/3] rounded-2xl"></div>
+            <div className="mb-6 h-7 w-40 animate-pulse rounded-lg bg-slate-800" />
+
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+              {Array.from({
+                length: 5,
+              }).map((_, index) => (
+                <div
+                  key={index}
+                  className="aspect-[2/3] animate-pulse rounded-2xl bg-slate-800"
+                />
               ))}
             </div>
           </div>
         )}
 
-        {error && <p className="text-rose-400 bg-rose-500/10 p-4 rounded-xl border border-rose-500/20 max-w-xl mx-auto text-center font-medium mb-8">{error}</p>}
+        {error && !loading && (
+          <p className="mx-auto mb-8 max-w-xl rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 text-center text-sm font-medium text-amber-300">
+            {error}
+          </p>
+        )}
 
         {!loading && (
           <div className="space-y-14">
-            
-            {/* 🍿 Live History Stream Component Placement */}
-            <ContinueWatchingRow />
+            {/* User-specific content */}
+            {user && <ContinueWatchingRow />}
 
-            {/* Category 1: Trending Grid */}
-            <div>
-              <h2 className="text-xl md:text-2xl font-black tracking-tight text-white mb-6 border-l-4 border-brandAccent pl-3">
+            {user && <RecommendedForYouRow />}
+
+            {/* Trending */}
+            <section>
+              <h2 className="mb-6 border-l-4 border-brandAccent pl-3 text-xl font-black tracking-tight text-white md:text-2xl">
                 Trending Now
               </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+
+              <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                 {movies.map((movie) => (
-                  <div 
-                    key={movie.id} 
-                    onClick={() => handleMovieNavigation(movie.id)}
-                    className="group relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-slate-700/80 hover:scale-[1.03] transition-all duration-300 shadow-md hover:shadow-2xl flex flex-col cursor-pointer"
+                  <article
+                    key={movie.id}
+                    onClick={() =>
+                      handleMovieNavigation(
+                        movie.id
+                      )
+                    }
+                    className="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-md transition-all duration-300 hover:scale-[1.03] hover:border-slate-700/80 hover:shadow-2xl"
                   >
-                    <div className="aspect-[2/3] w-full bg-slate-950 overflow-hidden relative">
-                      <img 
-                        src={movie.posterUrl || 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=400'} 
+                    <div className="relative aspect-[2/3] w-full overflow-hidden bg-slate-950">
+                      <img
+                        src={
+                          movie.posterUrl ||
+                          fallbackPoster
+                        }
                         alt={movie.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                        onError={(event) => {
+                          event.currentTarget.src =
+                            fallbackPoster;
+                        }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-4">
-                        <button className="w-full py-2 bg-brandAccent hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-md shadow-rose-900/40 cursor-pointer">
+
+                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-slate-950 via-transparent p-4 opacity-0 transition duration-300 group-hover:opacity-100">
+                        <button
+                          type="button"
+                          onClick={(event) => {
+                            event.stopPropagation();
+
+                            handleWatchNavigation(
+                              movie.id
+                            );
+                          }}
+                          className="w-full cursor-pointer rounded-xl bg-brandAccent py-2 text-xs font-bold text-white shadow-md shadow-rose-900/40 hover:bg-rose-700"
+                        >
                           Watch Stream
                         </button>
                       </div>
                     </div>
-                    <div className="p-4 flex-grow flex flex-col justify-between">
-                      <h3 className="font-bold text-white text-sm line-clamp-1 group-hover:text-brandAccent transition duration-150">{movie.title}</h3>
-                      <div className="flex items-center justify-between text-xs text-slate-400 mt-2">
-                        <span className="flex items-center text-amber-400 font-bold gap-1">⭐ {movie.rating?.toFixed(1) || '8.5'}</span>
-                        <span>{movie.releaseYear}</span>
-                        <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-[10px]">{movie.duration}</span>
+
+                    <div className="flex flex-grow flex-col justify-between p-4">
+                      <div>
+                        <h3 className="line-clamp-1 text-sm font-bold text-white transition duration-150 group-hover:text-brandAccent">
+                          {movie.title}
+                        </h3>
+
+                        {movie.genres.length >
+                          0 && (
+                          <p className="mt-1 truncate text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                            {movie.genres
+                              .slice(0, 2)
+                              .join(" • ")}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="mt-3 flex items-center justify-between gap-2 text-xs text-slate-400">
+                        <span className="flex items-center gap-1 font-bold text-amber-400">
+                          ⭐{" "}
+                          {movie.rating > 0
+                            ? movie.rating.toFixed(
+                                1
+                              )
+                            : "N/A"}
+                        </span>
+
+                        <span>
+                          {movie.releaseYear}
+                        </span>
+
+                        <span className="rounded bg-slate-800 px-1.5 py-0.5 font-mono text-[10px] text-slate-300">
+                          {movie.duration}
+                        </span>
                       </div>
                     </div>
-                  </div>
+                  </article>
                 ))}
               </div>
-            </div>
-
-            {/* Category 2: Recommended Row Preview */}
-            <div>
-              <h2 className="text-xl md:text-2xl font-black tracking-tight text-white mb-6 border-l-4 border-slate-700 pl-3">
-                Recommended For You
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 opacity-85 hover:opacity-100 transition duration-300">
-                {[...movies].reverse().map((movie) => (
-                  <div 
-                    key={`rec-${movie.id}`} 
-                    onClick={() => handleMovieNavigation(movie.id)}
-                    className="group relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-800/80 flex flex-col cursor-pointer hover:scale-102 transition duration-200"
-                  >
-                    <div className="aspect-[2/3] w-full bg-slate-950 overflow-hidden relative">
-                      <img src={movie.posterUrl || 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=400'} alt={movie.title} className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            </section>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 };

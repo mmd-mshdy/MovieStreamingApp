@@ -12,39 +12,67 @@ const fallbackPoster =
   "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=400";
 
 export const ContinueWatchingRow = () => {
-  const [items, setItems] = useState<ContinueWatchingDto[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState<
+    ContinueWatchingDto[]
+  >([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState<string | null>(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
 
-    const loadContinueWatching = async () => {
+    async function loadContinueWatching() {
       try {
         setLoading(true);
+        setError(null);
 
-        const data = await watchHistoryService.getContinueWatching();
+        const data =
+          await watchHistoryService
+            .getContinueWatching();
 
-        console.log("Continue-watching response:", data);
+        console.table(
+          data.map((item) => ({
+            title: item.title,
+            positionSeconds:
+              item.positionSeconds,
+            durationSeconds:
+              item.durationSeconds,
+            progressPercentage:
+              item.progressPercentage,
+          }))
+        );
 
         if (isMounted) {
-          setItems(Array.isArray(data) ? data : []);
+          setItems(
+            Array.isArray(data)
+              ? data
+              : []
+          );
         }
-      } catch (error) {
+      } catch (loadError) {
         console.error(
           "Failed to load continue-watching movies:",
-          error
+          loadError
         );
 
         if (isMounted) {
           setItems([]);
+          setError(
+            "Continue watching could not be loaded."
+          );
         }
       } finally {
         if (isMounted) {
           setLoading(false);
         }
       }
-    };
+    }
 
     void loadContinueWatching();
 
@@ -53,7 +81,28 @@ export const ContinueWatchingRow = () => {
     };
   }, []);
 
-  if (loading || items.length === 0) {
+  if (loading) {
+    return (
+      <section className="mb-10">
+        <h2 className="mb-6 border-l-4 border-amber-500 pl-3 text-xl font-black tracking-tight text-white md:text-2xl">
+          Continue Watching
+        </h2>
+
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          {Array.from({
+            length: 5,
+          }).map((_, index) => (
+            <div
+              key={index}
+              className="aspect-video animate-pulse rounded-2xl bg-slate-800"
+            />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (error || items.length === 0) {
     return null;
   }
 
@@ -65,30 +114,40 @@ export const ContinueWatchingRow = () => {
 
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {items.map((item) => {
-          const progressPercentage = Number.isFinite(
-            item.progressPercentage
-          )
-            ? Math.min(
-                Math.max(item.progressPercentage, 0),
-                100
-              )
-            : 0;
+          const progress =
+            Number.isFinite(
+              item.progressPercentage
+            )
+              ? Math.min(
+                  Math.max(
+                    item.progressPercentage,
+                    0
+                  ),
+                  100
+                )
+              : 0;
 
           return (
             <article
               key={item.movieId}
               onClick={() =>
-                navigate(`/watch/${item.movieId}`)
+                navigate(
+                  `/watch/${item.movieId}`
+                )
               }
               className="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900 transition duration-200 hover:scale-[1.02]"
             >
               <div className="relative aspect-video w-full overflow-hidden bg-slate-950">
                 <img
-                  src={item.posterUrl || fallbackPoster}
+                  src={
+                    item.posterUrl ||
+                    fallbackPoster
+                  }
                   alt={item.title}
                   className="h-full w-full object-cover brightness-75 transition duration-300 group-hover:brightness-90"
                   onError={(event) => {
-                    event.currentTarget.src = fallbackPoster;
+                    event.currentTarget.src =
+                      fallbackPoster;
                   }}
                 />
 
@@ -98,23 +157,30 @@ export const ContinueWatchingRow = () => {
                   </div>
                 </div>
 
-                <div className="absolute bottom-0 left-0 h-1.5 w-full bg-slate-800">
+                <div className="absolute bottom-0 left-0 h-2 w-full bg-slate-800">
                   <div
                     className="h-full bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-300"
                     style={{
-                      width: `${progressPercentage}%`,
+                      width: `${progress}%`,
                     }}
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-3">
-                <h3 className="max-w-[70%] truncate text-xs font-bold text-white">
-                  {item.title || "Unknown Movie"}
-                </h3>
+              <div className="flex items-center justify-between gap-3 p-3">
+                <div className="min-w-0">
+                  <h3 className="truncate text-xs font-bold text-white">
+                    {item.title}
+                  </h3>
 
-                <span className="text-[10px] font-bold text-slate-400">
-                  {Math.round(progressPercentage)}%
+                  <p className="mt-1 text-[10px] text-slate-500">
+                    {item.positionSeconds}s of{" "}
+                    {item.durationSeconds}s
+                  </p>
+                </div>
+
+                <span className="shrink-0 text-xs font-bold text-amber-400">
+                  {progress.toFixed(1)}%
                 </span>
               </div>
             </article>

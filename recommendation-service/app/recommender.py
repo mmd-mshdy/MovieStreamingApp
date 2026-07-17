@@ -42,7 +42,7 @@ class RecommendationEngine:
             verify=settings.verify_ssl,
             timeout=20.0,
         ) as client:
-            response = await client.get(settings.movie_catalog_url)
+            response = await client.get(settings.recommendation_catalog_url)
             response.raise_for_status()
 
         raw_movies = response.json()

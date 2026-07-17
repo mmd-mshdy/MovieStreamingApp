@@ -19,6 +19,24 @@ namespace MovieStreaming.WebApi.Controllers
         {
             _sender = sender;
         }
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchMovies(
+    [FromQuery] string query,
+    CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return Ok(Array.Empty<MovieDto>());
+            }
+
+            var result = await _sender.Send(
+                new SearchMoviesQuery(query),
+                cancellationToken);
+
+            return result.IsSuccess
+                ? Ok(result.Value)
+                : BadRequest(result.Error);
+        }
 
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetMovieById(Guid id)

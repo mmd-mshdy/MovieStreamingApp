@@ -1,25 +1,41 @@
 ﻿using AutoMapper;
 using MovieStreaming.Domain.Aggregates.Movies;
 using MovieStreaming.Domain.Aggregates.Users;
-namespace MovieStreaming.Application.DTOs.Mapper
+
+namespace MovieStreaming.Application.DTOs.Mapper;
+
+public sealed class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<Movie, CreateMovieDto>();
-            CreateMap< CreateMovieDto,Movie>();
+        CreateMap<CreateMovieDto, Movie>();
+        CreateMap<Movie, CreateMovieDto>();
 
-            // Inside MappingProfile.cs
-            CreateMap<Movie, MovieDto>()
-    .ForMember(dest => dest.reviews, opt => opt.MapFrom(src => src.Reviews))
-    // Mapping the genres collection to a list of strings
-    .ForMember(dest => dest.genres, opt => opt.MapFrom(src =>
-        src.Genres.Select(g => g.Name).ToList()));
+        CreateMap<Review, ReviewDto>()
+            .ForCtorParam(
+                "userName",
+                options => options.MapFrom(
+                    source => "Anonymous"));
 
-            CreateMap<Review, ReviewDto>(); CreateMap<Review, AddReviewDto>().ForMember(dest => dest.rating ,opt => opt.MapFrom(src => 0.0));
-            CreateMap<User, CreateUserDto>();
-            CreateMap<CastMembers , CastMemberDto>();
-        }
+        CreateMap<Movie, MovieDto>()
+            .ForCtorParam(
+                "reviews",
+                options => options.MapFrom(
+                    source => source.Reviews))
+            .ForCtorParam(
+                "genres",
+                options => options.MapFrom(
+                    source => source.Genres
+                        .Select(genre => genre.Name)
+                        .ToList()));
+
+        CreateMap<Review, AddReviewDto>()
+            .ForMember(
+                destination => destination.rating,
+                options => options.MapFrom(
+                    source => source.Rating));
+
+        CreateMap<User, CreateUserDto>();
+
     }
 }

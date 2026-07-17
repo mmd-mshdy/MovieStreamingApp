@@ -40,7 +40,7 @@ public class WatchHistoryQueries : IWatchHistoryQueries
 
     public async Task<List<ContinueWatchingDto>> GetContinueWatching(
     Guid userId,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken = default)
     {
         const string sql = """
         SELECT
@@ -76,7 +76,8 @@ public class WatchHistoryQueries : IWatchHistoryQueries
             cancellationToken: cancellationToken);
 
         var result =
-            await _dbConnection.QueryAsync<ContinueWatchingDto>(command);
+            await _dbConnection.QueryAsync<ContinueWatchingDto>(
+                command);
 
         return result.ToList();
     }

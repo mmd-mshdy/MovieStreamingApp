@@ -24,8 +24,6 @@ namespace MovieStreaming.Application.Command.MovieCommands
         public async Task<Result<CreateMovieDto>> Handle(CreateMovieCommand request, CancellationToken cancellationToken)
         {
             var createDto = request.dto;
-            IEnumerable<Domain.Aggregates.Movies.Movie> movieExists = await _movieRepository.FindByTitle(createDto.title);
-            if (movieExists.Any()) return Result.Failure<CreateMovieDto>(new("Movie.CreateMovie.Error.MovieExists", "This movie already exists"));
 
             var newmovie = _mapper.Map<MovieStreaming.Domain.Aggregates.Movies.Movie>(createDto);
             if (newmovie == null) return Result.Failure<CreateMovieDto>(new("Movie.NullException", "Movie Must not Be Null"));

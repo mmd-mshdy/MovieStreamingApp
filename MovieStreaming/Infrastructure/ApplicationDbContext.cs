@@ -10,7 +10,6 @@ namespace MovieStreaming.Infrastructure
         public DbSet<Movie> Movies { get; set; } 
         public DbSet<Review> Reviews { get; set; } 
         public DbSet<User> Users { get; set; }
-        public DbSet<CastMembers> CastMembers { get; set; } 
         public DbSet<WatchHistory> WatchHistories { get; set; }
         public DbSet<WatchList> WatchLists{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,10 +23,6 @@ namespace MovieStreaming.Infrastructure
 
             modelBuilder.Entity<Movie>()
                 .Navigation(movie => movie.Genres)
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-            modelBuilder.Entity<Movie>()
-                .Navigation(movie => movie.CastMembers)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             modelBuilder.Entity<User>()

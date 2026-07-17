@@ -6,8 +6,7 @@ namespace MovieStreaming.Application.Interfaces
     {
         Task<IEnumerable<Movie>> GetAllAsync();
         Task<Movie> FindById(Guid id);
-        Task<IEnumerable<Movie>> FindByTitle(string title);
-        Task<IEnumerable<Movie>> FindByCastMember(string name);
+        Task<IReadOnlyList<Movie>> SearchByTitleAsync(string searchTerm,CancellationToken cancellationToken = default);
         Task CreateAsync(Movie movie);
         Task UpdateAsync(Movie movie);
         Task DeleteAsync(Movie movie);

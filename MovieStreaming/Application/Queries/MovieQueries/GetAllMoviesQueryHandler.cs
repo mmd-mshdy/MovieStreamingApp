@@ -5,28 +5,43 @@ using MovieStreaming.Application.Interfaces;
 using MovieStreaming.Domain.Common.Errors;
 using MovieStreaming.Domain.Common.Result;
 
-namespace MovieStreaming.Application.Queries.MovieQueries
+namespace MovieStreaming.Application.Queries.MovieQueries;
+
+public sealed class GetAllMoviesQueryHandler
+    : IRequestHandler<
+        GetAllMoviesQuery,
+        Result<IEnumerable<MovieDto>>>
 {
-    public class GetAllMoviesQueryHandler : IRequestHandler<GetAllMoviesQuery , Result<IEnumerable<MovieDto>>>
+    private readonly IMovieRepository _repository;
+    private readonly IMapper _mapper;
+
+    public GetAllMoviesQueryHandler(
+        IMovieRepository repository,
+        IMapper mapper)
     {
-        private readonly IMovieRepository _repository;
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork unitOfWork;
+        _repository = repository;
+        _mapper = mapper;
+    }
 
-        public GetAllMoviesQueryHandler(IMovieRepository repository, IMapper mapper)
+    public async Task<Result<IEnumerable<MovieDto>>> Handle(
+        GetAllMoviesQuery request,
+        CancellationToken cancellationToken)
+    {
+        var movies = await _repository.GetAllAsync();
+
+        var movieList = movies.ToList();
+
+        if (movieList.Count == 0)
         {
-            _repository = repository;
-            _mapper = mapper;
+            return Result.Failure<IEnumerable<MovieDto>>(
+                new Error(
+                    "Movie.NotFound",
+                    "Movies were not found."));
         }
 
-        public async Task<Result<IEnumerable<MovieDto>>> Handle(GetAllMoviesQuery request, CancellationToken cancellationToken)
-        {
-            
-            var movies = await _repository.GetAllAsync();
-            var result = _mapper.Map<IEnumerable<MovieDto>>(movies);
-            if (!result.Any()) return Result.Failure<IEnumerable<MovieDto>>(new Error("Movie.NotFound", "MOvies were not found"));
-            return Result.Success(result);
+        var movieDtos =
+            _mapper.Map<IEnumerable<MovieDto>>(movieList);
 
-        }
+        return Result.Success(movieDtos);
     }
 }

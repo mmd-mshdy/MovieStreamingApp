@@ -1,16 +1,14 @@
 // src/services/movieService.ts
 import apiClient from "./apiClient";
 
-// 1. Explicit definition for individual review nodes matching AddReviewDto on your backend
 export interface ReviewDto {
   id: string;
   userId: string;
-  userName:string;
+  userName: string;
   rating: number;
   comment: string;
 }
 
-// 2. Form payload type sent when triggering the Add Review Command pipeline
 export interface AddReviewDto {
   userId: string;
   rating: number;
@@ -21,19 +19,23 @@ export interface MovieDto {
   id: string;
   title: string;
   description: string;
-  duration: string; // Map from C# TimeSpan string (e.g., "02:15:00")
+  duration: string;
   releaseDate: string;
   posterUrl: string;
   videoUrl: string;
-  reviews?: ReviewDto[]; // Optional collection included when fetching a single title's details
+  reviews: ReviewDto[];
+  genres: string[];
 }
 
 export const movieService = {
   // Using the apiClient instance ensures JWT tokens are attached automatically
   async getAllMovies(): Promise<MovieDto[]> {
-    const { data } = await apiClient.get<MovieDto[]>("/movies");
-    return data;
-  },
+  const response =
+    await apiClient.get<MovieDto[]>("/movies");
+
+  return response.data;
+  console.log("Movie API raw response:", response.data);
+},
 
   // GET Api/Movie/{id:Guid} - Maps to your backend GetMovieById action
   async getMovieById(id: string): Promise<MovieDto> {
@@ -51,5 +53,27 @@ export const movieService = {
     // Inject the movieId parameter directly into the path segment string
     const { data } = await apiClient.post(`/movies/${movieId}/reviews`, reviewData);
     return data;
+  },
+  async searchMovies(
+  searchTerm: string
+): Promise<MovieDto[]> {
+  const normalizedSearchTerm =
+    searchTerm.trim();
+
+  if (!normalizedSearchTerm) {
+    return [];
   }
+
+  const { data } =
+    await apiClient.get<MovieDto[]>(
+      "/movies/search",
+      {
+        params: {
+          query: normalizedSearchTerm,
+        },
+      }
+    );
+
+  return data;
+},
 };

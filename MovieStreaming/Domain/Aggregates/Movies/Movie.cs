@@ -8,7 +8,6 @@ namespace MovieStreaming.Domain.Aggregates.Movies
     {
         private readonly List<Genre> _genres = new();
         private readonly List<Review> _reviews = new List<Review>();
-        private readonly List<CastMembers> _castMembers = new List<CastMembers>();
         public string Title { get; set; }
         public string Description { get; set; }
         public TimeSpan Duration { get; set; }
@@ -21,7 +20,6 @@ namespace MovieStreaming.Domain.Aggregates.Movies
 
         public double AverageRating { get; private set; }
         public IReadOnlyCollection<Genre> Genres => _genres.AsReadOnly();
-        public IReadOnlyCollection<CastMembers> CastMembers => _castMembers.AsReadOnly();
         public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
         public Result AddReview(
     Guid reviewId,
@@ -67,15 +65,6 @@ namespace MovieStreaming.Domain.Aggregates.Movies
             }
 
             AverageRating = _reviews.Average(r => r.Rating);
-        }
-        public Result AddCastMembers (IEnumerable<CastMembers> castMembers)
-        {
-            if (castMembers == null) return Result.Failure(new("CastMembers.Null", "Members should not be null"));
-            foreach (var castMember in castMembers)
-            {
-                _castMembers.Add(castMember);
-            }
-            return Result.Success();
         }
         public void UpdateMediaUrls(string posterUrl, string videoUrl)
         {
