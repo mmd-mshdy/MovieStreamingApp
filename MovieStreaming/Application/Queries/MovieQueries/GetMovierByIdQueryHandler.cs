@@ -40,15 +40,15 @@ public class GetMovieByIdQueryHandler
 
         foreach (var review in movie.Reviews)
         {
-            var reviewUser =
-                await _userRepository.GetUserById(
-                    review.UserId);
+            var user = await _userRepository.GetUserById(
+    review.UserId,
+    cancellationToken);
 
             reviewDtos.Add(
                 new ReviewDto(
                     review.Id,
                     review.UserId,
-                    reviewUser?.Name ?? "Anonymous",
+                    user?.Name ?? "Deleted User",
                     review.Rating,
                     review.Comment));
         }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieStreaming.Domain.Aggregates.Movies;
 using MovieStreaming.Domain.Aggregates.Users;
-using MovieStreaming.Domain.ValueObjects;
 namespace MovieStreaming.Infrastructure
 {
     public class ApplicationDbContext : DbContext 
@@ -25,18 +24,6 @@ namespace MovieStreaming.Infrastructure
                 .Navigation(movie => movie.Genres)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            modelBuilder.Entity<User>()
-                .OwnsOne(u => u.WalletBallance, moneyBuilder =>
-                {
-                    moneyBuilder.Property(m => m.Amount)
-                        .HasColumnName("WalletAmount");
-
-                    moneyBuilder.Property(m => m.Amount)
-                        .HasPrecision(18, 2);
-
-                    moneyBuilder.Property(m => m.Currency)
-                        .HasColumnName("WalletCurrency");
-                });
         }
     }
 

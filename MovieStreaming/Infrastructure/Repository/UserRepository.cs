@@ -29,13 +29,14 @@ namespace MovieStreaming.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<User> GetUserById(Guid id)
+        public async Task<User> GetUserById(Guid id,CancellationToken cancellationToken)
         {
-            var query = @"SELECT * FROM Users WHERE Id = @Id ";
-            var user = await _dbConnection.QueryFirstOrDefaultAsync<User>(query, new { Id = id });
-            if (user == null) throw new ArgumentNullException($"{nameof(user)}");
-            return user;
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Id == id);
 
+            ArgumentNullException.ThrowIfNull(user);
+
+            return user;
         }
 
         public async Task<IEnumerable<User>> GetUserByName(string name)

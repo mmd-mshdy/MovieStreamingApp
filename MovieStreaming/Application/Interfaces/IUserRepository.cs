@@ -7,8 +7,9 @@ namespace MovieStreaming.Application.Interfaces
         Task CreateUser(User user);
         Task UpdateUser(User user);
         Task DeleteUser(User user);
-        Task<User> GetUserById(Guid id);
-        Task<IEnumerable<User>> GetUserByName(string name);
+        Task<User?> GetUserById(
+            Guid id,
+            CancellationToken cancellationToken = default); Task<IEnumerable<User>> GetUserByName(string name);
         Task<User?> FindByEmailAsync(string email);
     }
 }

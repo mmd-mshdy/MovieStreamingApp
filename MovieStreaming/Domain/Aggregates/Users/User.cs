@@ -1,6 +1,5 @@
 ﻿using MovieStreaming.Domain.Common;
 using MovieStreaming.Domain.Enums;
-using MovieStreaming.Domain.ValueObjects;
 
 namespace MovieStreaming.Domain.Aggregates.Users
 {
@@ -11,7 +10,6 @@ namespace MovieStreaming.Domain.Aggregates.Users
         public string? Name { get; private set; }
         public string? Email { get; private set; }
         public string? PasswordHash { get; private set; }
-        public Money? WalletBallance { get; private set; }
         public SubscriptionType SubscriptionType { get; private set; }
 
         public IReadOnlyCollection<WatchList> WatchLists => _watchLists;
@@ -36,14 +34,12 @@ namespace MovieStreaming.Domain.Aggregates.Users
         {
             PasswordHash = hashedPass;
         }
-        public void AddWalletBalance(Money money)
+        public void AddWalletBalance(string money)
         {
-            WalletBallance.Add(money);
            
         }
-        public void DeductWalletBallance(Money money)
+        public void DeductWalletBallance(string money)
         {
-            WalletBallance.Deduct(money);
 
         }
     }

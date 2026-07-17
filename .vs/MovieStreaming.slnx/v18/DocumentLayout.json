@@ -1,7 +1,28 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\infrastructure\\repository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\infrastructure\\repository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\application\\queries\\moviequeries\\getmovierbyidqueryhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\application\\queries\\moviequeries\\getmovierbyidqueryhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\application\\interfaces\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\application\\interfaces\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\infrastructure\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\infrastructure\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|c:\\users\\mohammad\u0027s lenovo\\source\\repos\\moviestreaming\\moviestreaming\\domain\\aggregates\\users\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50C15F8A-434B-0F4A-5F0D-F95807BEDD4B}|MovieStreaming\\MovieStreaming.csproj|solutionrelative:moviestreaming\\domain\\aggregates\\users\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +30,76 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GetMovierByIdQueryHandler.cs",
+              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Application\\Queries\\MovieQueries\\GetMovierByIdQueryHandler.cs",
+              "RelativeDocumentMoniker": "MovieStreaming\\Application\\Queries\\MovieQueries\\GetMovierByIdQueryHandler.cs",
+              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Application\\Queries\\MovieQueries\\GetMovierByIdQueryHandler.cs",
+              "RelativeToolTip": "MovieStreaming\\Application\\Queries\\MovieQueries\\GetMovierByIdQueryHandler.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAYwC4AAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-17T22:06:00.813Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IUserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Application\\Interfaces\\IUserRepository.cs",
+              "RelativeDocumentMoniker": "MovieStreaming\\Application\\Interfaces\\IUserRepository.cs",
+              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Application\\Interfaces\\IUserRepository.cs",
+              "RelativeToolTip": "MovieStreaming\\Application\\Interfaces\\IUserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-17T22:04:32.606Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Infrastructure\\Repository\\UserRepository.cs",
+              "RelativeDocumentMoniker": "MovieStreaming\\Infrastructure\\Repository\\UserRepository.cs",
+              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Infrastructure\\Repository\\UserRepository.cs",
+              "RelativeToolTip": "MovieStreaming\\Infrastructure\\Repository\\UserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAABXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-17T21:47:45.929Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Infrastructure\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "MovieStreaming\\Infrastructure\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Infrastructure\\ApplicationDbContext.cs",
+              "RelativeToolTip": "MovieStreaming\\Infrastructure\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-17T21:49:44.752Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
+              "RelativeDocumentMoniker": "MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
+              "ToolTip": "C:\\Users\\Mohammad\u0027s Lenovo\\source\\repos\\MovieStreaming\\MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
+              "RelativeToolTip": "MovieStreaming\\Domain\\Aggregates\\Users\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-17T21:48:41.498Z",
+              "EditorCaption": ""
             }
           ]
         }
